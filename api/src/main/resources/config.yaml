@@ -1,0 +1,15 @@
+kumuluzee:
+  name: rso-apartment
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
+  datasources:
+    - jndi-name: jdbc/ApartmentDS
+      connection-url: jdbc:postgresql://192.168.1.119:5432/apartment
+      username: dbuser
+      password: postgres
+      max-pool-size: 20
