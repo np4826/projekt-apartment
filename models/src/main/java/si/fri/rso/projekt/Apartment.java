@@ -351,4 +351,8 @@ public class Apartment {
     public void setSubmitted(Date submitted) {
         this.submitted = submitted;
     }
+
+    public String getUserId() {
+        return userId;
+    }
 }

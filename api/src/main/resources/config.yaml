@@ -9,7 +9,7 @@ kumuluzee:
       port: 8081
   datasources:
     - jndi-name: jdbc/ApartmentDS
-      connection-url: jdbc:postgresql://192.168.1.119:5432/apartment
+      connection-url: jdbc:postgresql://172.17.0.1:32768/apartment
       username: dbuser
       password: postgres
       max-pool-size: 20
