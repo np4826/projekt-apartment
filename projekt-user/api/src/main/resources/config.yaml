@@ -1,0 +1,15 @@
+kumuluzee:
+  name: rso-user
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8082
+    http:
+      port: 8082
+  datasources:
+    - jndi-name: jdbc/UserDS
+      connection-url: jdbc:postgresql://172.17.0.1:32769/users
+      username: dbuser
+      password: postgres
+      max-pool-size: 20

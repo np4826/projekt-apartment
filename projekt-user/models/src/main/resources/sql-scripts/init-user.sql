@@ -1,0 +1,2 @@
+INSERT INTO users (id, lastName, birthday, firstName, description, joined) VALUES (1, 'Mills', TIMESTAMP '1987-05-16 00:00:00', 'Amanda', '', TIMESTAMP '2017-10-31 20:00:00');
+INSERT INTO users (id, lastName, birthday, firstName, description, joined) VALUES (2, 'Castillo', TIMESTAMP '1993-02-03 00:00:00', 'Xavier', 'I am Creative, artistic who enjoys making my home tranquil and my roof garden a heaven.', TIMESTAMP '2017-08-09 15:02:40');
