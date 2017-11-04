@@ -136,7 +136,7 @@ public class UserBean {
     @CommandKey("http-get-apartment")
     @Timeout(value = 500)
     public List<Apartment> getApartments(String userId) {
-        String basePath = "http://localhost:8081";
+        String basePath = "http://192.168.1.9:8081";
         if (basePath != null) {
             try {
                 HttpGet request = new HttpGet(basePath + "/v1/apartment?where=userId:EQ:" + userId);
