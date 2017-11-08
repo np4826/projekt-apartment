@@ -1,11 +1,13 @@
 package si.fri.rso.projekt.services;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.fault.tolerance.annotations.*;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -136,7 +138,7 @@ public class UserBean {
     @CommandKey("http-get-apartment")
     @Timeout(value = 500)
     public List<Apartment> getApartments(String userId) {
-        String basePath = "http://192.168.1.9:8081";
+        String basePath = "http://192.168.1.145:8081";
         if (basePath != null) {
             try {
                 HttpGet request = new HttpGet(basePath + "/v1/apartment?where=userId:EQ:" + userId);
@@ -170,7 +172,7 @@ public class UserBean {
 
     private List<Apartment> getObjects(String json) throws IOException {
         return json == null ? new ArrayList<>() : objectMapper.readValue(json,
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Apartment.class));
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).getTypeFactory().constructCollectionType(List.class, Apartment.class));
     }
 
     private void beginTx() {

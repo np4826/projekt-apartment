@@ -24,14 +24,14 @@ public class ApartmentResource {
     private ApartmentBean apartmentBean;
 
     @GET
-    public Response getOrders() {
+    public Response getApartments() {
         List<Apartment> apartments = apartmentBean.getApartments(uriInfo);
         return Response.ok(apartments).build();
     }
 
     @GET
     @Path("/{apartmentId}")
-    public Response getOrder(@PathParam("apartmentId") String apartmentId) {
+    public Response getApartment(@PathParam("apartmentId") String apartmentId) {
 
         Apartment apartment = apartmentBean.getApartment(apartmentId);
 
@@ -43,7 +43,7 @@ public class ApartmentResource {
     }
 
     @POST
-    public Response createOrder(Apartment apartment) {
+    public Response createApartment(Apartment apartment) {
 
         if (apartment.getTitle() == null || apartment.getTitle().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -60,7 +60,7 @@ public class ApartmentResource {
 
     @PUT
     @Path("{apartmentId}")
-    public Response putZavarovanec(@PathParam("apartmentId") String apartmentId, Apartment apartment) {
+    public Response putApartment(@PathParam("apartmentId") String apartmentId, Apartment apartment) {
 
         apartment = apartmentBean.putApartment(apartmentId, apartment);
 
@@ -76,7 +76,7 @@ public class ApartmentResource {
 
     @DELETE
     @Path("{apartmentId}")
-    public Response deleteCustomer(@PathParam("apartmentId") String apartmentId) {
+    public Response deleteApartment(@PathParam("apartmentId") String apartmentId) {
 
         boolean deleted = apartmentBean.deleteApartment(apartmentId);
 
