@@ -13,3 +13,9 @@ kumuluzee:
       username: dbuser
       password: postgres
       max-pool-size: 20
+  config:
+    etcd:
+      hosts: http://192.168.99.100:2379
+  discovery:
+    etcd:
+      hosts: http://192.168.99.100:2379

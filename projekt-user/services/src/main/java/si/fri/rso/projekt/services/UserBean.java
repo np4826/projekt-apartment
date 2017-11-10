@@ -2,12 +2,12 @@ package si.fri.rso.projekt.services;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.fault.tolerance.annotations.*;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,6 +27,7 @@ import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequestScoped
 @GroupKey("apartment")
@@ -43,6 +44,10 @@ public class UserBean {
 
     @Inject
     private UserBean userBean;
+
+    @Inject
+    @DiscoverService(value = "rso-apartment", environment = "dev", version = "*")
+    private Optional<String> basePath;
 
     @PostConstruct
     private void init() {
@@ -135,13 +140,13 @@ public class UserBean {
 
     @CircuitBreaker(failureRatio = 0.3)
     @Fallback(fallbackMethod = "getApartmentsFallback")
-    @CommandKey("http-get-apartment")
+    @CommandKey("http-get-order")
     @Timeout(value = 500)
     public List<Apartment> getApartments(String userId) {
-        String basePath = "http://192.168.1.145:8081";
-        if (basePath != null) {
+
+        if (basePath.isPresent()) {
             try {
-                HttpGet request = new HttpGet(basePath + "/v1/apartment?where=userId:EQ:" + userId);
+                HttpGet request = new HttpGet(basePath.get() + "/v1/apartment?where=userId:EQ:" + userId);
                 HttpResponse response = httpClient.execute(request);
                 //http://localhost:8081/v1/apartment?where=userId:EQ:1
                 int status = response.getStatusLine().getStatusCode();
@@ -151,7 +156,7 @@ public class UserBean {
                     if (entity != null)
                         return getObjects(EntityUtils.toString(entity));
                 } else {
-                    String msg = "Remote server '" + basePath + "' is responded with status " + status + ".";
+                    String msg = "Remote server '" + basePath.get() + "' is responded with status " + status + ".";
                     throw new InternalServerErrorException(msg);
                 }
 
