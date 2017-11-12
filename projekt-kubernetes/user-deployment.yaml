@@ -1,17 +1,17 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: projekt-apartment-deployment
+  name: user-deployment
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: discover
+        app: user
     spec:
       containers:
-      - image: projekt-apartment:v1
-        name: projekt-apartment
+      - image: projekt-user:v1
+        name: user
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: minikube

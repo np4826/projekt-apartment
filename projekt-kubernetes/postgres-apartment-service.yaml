@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: discover
+  name: postgres-apartment
 spec:
   type: NodePort
   ports:
-  - port: 8080
+  - port: 32768
     protocol: TCP
-    targetPort: 8080
+    targetPort: 32768
   selector:
-    app: discover
+    app: postgres-apartment

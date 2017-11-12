@@ -88,3 +88,48 @@ Mac - when finished, remove loopback (alias is not persistent – it will not su
 ```bash
 sudo ifconfig lo0 -alias 192.168.99.100
 ```
+
+
+#Kubernetes
+## Prerequisites
+**Windows (Powershell)**
+```bash
+minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube
+& minikube docker-env | Invoke-Expression
+```
+**MacOs**
+```bash
+minikube start
+eval $(minikube docker-env)
+```
+
+```bash
+cd projekt-apartment\projekt-apartment 
+mvn clean package
+docker build -t projekt-apartment:v1 .
+cd ..\projekt-user
+mvn clean package
+docker build -t projekt-user:v1 .
+```
+
+** To delete all items from minikube **
+```bash
+kubectl delete --all pods --namespace=default
+kubectl delete --all deployments --namespace=default
+kubectl delete --all services --namespace=default
+```
+
+```bash
+cd ../projekt-kubernetes
+kubectl create -f etcd.yaml
+kubectl create -f apartment-deployment.yaml
+kubectl create -f user-deployment.yaml
+kubectl create -f apartment-service.yaml
+kubectl create -f user-service.yaml
+```
+
+**To get user service ip and port:**
+```bash
+minikube ip
+kubectl describe service user | Select-String -Pattern "NodePort"
+```
