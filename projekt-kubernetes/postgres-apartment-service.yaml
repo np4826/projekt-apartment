@@ -7,6 +7,6 @@ spec:
   ports:
   - port: 32768
     protocol: TCP
-    targetPort: 32768
+    targetPort: 5432
   selector:
     app: postgres-apartment

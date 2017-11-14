@@ -24,6 +24,10 @@ spec:
         - http://etcd:2379
         - --initial-cluster-state
         - new
+        - -cors
+        - "*"
+        - --data-dir
+        - /etcd-data
         image: quay.io/coreos/etcd:latest
         name: etcd
         ports:

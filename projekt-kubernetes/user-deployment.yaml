@@ -10,7 +10,7 @@ spec:
         app: user
     spec:
       containers:
-      - image: kknp/rso-user
+      - image: kknp/rso-user:0.01
         name: user
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -20,7 +20,7 @@ spec:
           - name: KUMULUZEE_CONFIG_ETCD_HOSTS
             value: http://etcd:2379
           - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-            value: jdbc:postgresql://postgres-user:32769/user
+            value: jdbc:postgresql://postgres-user:32768/user
         ports:
         - containerPort: 8080
           name: server

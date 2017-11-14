@@ -10,7 +10,7 @@ spec:
         app: apartment
     spec:
       containers:
-      - image: kknp/rso-apartment
+      - image: kknp/rso-apartment:0.01
         name: apartment
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -23,6 +23,6 @@ spec:
             value: jdbc:postgresql://postgres-apartment:5432/apartment
           
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
           name: server
           protocol: TCP

@@ -7,6 +7,6 @@ spec:
   ports:
   - port: 32769
     protocol: TCP
-    targetPort: 32769
+    targetPort: 5432
   selector:
     app: postgres-user

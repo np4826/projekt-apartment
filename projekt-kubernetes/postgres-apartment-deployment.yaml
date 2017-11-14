@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - image: centos/postgresql-94-centos7
-          name: postgres-customers
+          name: postgres-apartment
           env:
             - name: POSTGRESQL_USER
               value: dbuser
@@ -22,3 +22,4 @@ spec:
           ports:
           - containerPort: 32768
             protocol: TCP
+
