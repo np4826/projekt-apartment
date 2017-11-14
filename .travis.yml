@@ -14,18 +14,14 @@ cache:
   - $HOME/.m2
   edge: true
 
-env:
-  - DOCKER_IMAGE_APARTMENT=kknp/rso-apartment:0.01
-  - DOCKER_IMAGE_USER=kknp/rso-user:0.01
-
 script:
   - mvn clean package -U
   - cd projekt-apartment
-  - docker build -t "$DOCKER_IMAGE_APARTMENT" .
+  - docker build -t kknp/rso-apartment:0.01 .
   - cd ../projekt-user/
-  - docker build -t "$DOCKER_IMAGE_USER" .
+  - docker build -t kknp/rso-user:0.01 .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push "$DOCKER_IMAGE_APARTMENT"
-  - docker push "$DOCKER_IMAGE_USER"
+  - docker push kknp/rso-apartment:0.01
+  - docker push kknp/rso-user:0.01
