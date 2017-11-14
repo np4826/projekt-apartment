@@ -10,7 +10,7 @@ spec:
         app: apartment
     spec:
       containers:
-      - image:kknp/rso-apartment
+      - image: kknp/rso-apartment
         name: apartment
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -20,7 +20,8 @@ spec:
           - name: KUMULUZEE_CONFIG_ETCD_HOSTS
             value: http://etcd:2379
           - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-            value: jdbc:postgresql://postgres-apartment:32768/apartment
+            value: jdbc:postgresql://postgres-apartment:5432/apartment
+          
         ports:
         - containerPort: 8080
           name: server
