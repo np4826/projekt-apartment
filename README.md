@@ -132,4 +132,5 @@ kubectl create -f user-service.yaml
 ```bash
 minikube ip
 kubectl describe service user | Select-String -Pattern "NodePort"
+minikube dashboard
 ```

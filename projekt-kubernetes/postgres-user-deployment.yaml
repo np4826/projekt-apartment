@@ -19,6 +19,7 @@ spec:
               value: postgres
             - name: POSTGRESQL_DATABASE
               value: user
+
           ports:
           - containerPort: 32769
             protocol: TCP

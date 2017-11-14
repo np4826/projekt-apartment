@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-user
+spec:
+  type: NodePort
+  ports:
+  - port: 32769
+    protocol: TCP
+    targetPort: 32769
+  selector:
+    app: postgres-user
