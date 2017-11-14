@@ -12,6 +12,7 @@ jdk:
 cache:
   directories:
   - $HOME/.m2
+  edge: true
 
 env:
   - DOCKER_IMAGE_APARTMENT=kknp/rso-apartment:0.01
