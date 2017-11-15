@@ -9,15 +9,15 @@ kumuluzee:
       port: 8082
   datasources:
     - jndi-name: jdbc/UserDS
-      connection-url: jdbc:postgresql://172.17.0.1:32769/users
+      connection-url: jdbc:postgresql://172.17.0.5:32769/users
       username: dbuser
       password: postgres
       max-pool-size: 20
   config:
     etcd:
-       hosts: http://localhost:2379
+       hosts: http://172.17.0.5:2379
   discovery:
     etcd:
-       hosts: http://localhost:2379
+       hosts: http://172.17.0.5:2379
     ttl: 20
     ping-interval: 15

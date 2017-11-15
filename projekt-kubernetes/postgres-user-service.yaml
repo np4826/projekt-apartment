@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: postgres-user
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 32769
     protocol: TCP
