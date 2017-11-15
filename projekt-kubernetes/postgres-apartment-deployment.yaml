@@ -20,6 +20,6 @@ spec:
             - name: POSTGRESQL_DATABASE
               value: apartment
           ports:
-          - containerPort: 32768
+          - containerPort: 5432
             protocol: TCP
 

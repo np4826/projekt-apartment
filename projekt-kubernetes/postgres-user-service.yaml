@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 32769
+  - port: 5432
     protocol: TCP
     targetPort: 5432
   selector:
