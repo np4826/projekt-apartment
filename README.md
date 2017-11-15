@@ -90,7 +90,7 @@ sudo ifconfig lo0 -alias 192.168.99.100
 ```
 
 
-#Kubernetes
+# Kubernetes
 ## Prerequisites
 **Windows (Powershell)**
 ```bash
@@ -122,6 +122,10 @@ kubectl delete --all services --namespace=default
 ```bash
 cd ../projekt-kubernetes
 kubectl create -f etcd.yaml
+kubectl create -f postgres-apartment-deployment.yaml
+kubectl create -f postgres-user-deployment.yaml
+kubectl create -f postgres-user-service.yaml
+kubectl create -f postgres-apartment-service.yaml
 kubectl create -f apartment-deployment.yaml
 kubectl create -f user-deployment.yaml
 kubectl create -f apartment-service.yaml
