@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @RequestScoped
 @GroupKey("apartment")
 public class UserBean {
@@ -150,6 +151,7 @@ public class UserBean {
                 HttpResponse response = httpClient.execute(request);
                 //http://localhost:8081/v1/apartment?where=userId:EQ:1
                 int status = response.getStatusLine().getStatusCode();
+                log.info("Basepath:" + basePath.get());
                 if (status >= 200 && status < 300) {
                     HttpEntity entity = response.getEntity();
 
@@ -157,6 +159,7 @@ public class UserBean {
                         return getObjects(EntityUtils.toString(entity));
                 } else {
                     String msg = "Remote server '" + basePath.get() + "' is responded with status " + status + ".";
+                    log.error(msg);
                     throw new InternalServerErrorException(msg);
                 }
 

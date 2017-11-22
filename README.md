@@ -100,8 +100,9 @@ minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube
 **MacOs**
 ```bash
 minikube start
-eval $(minikube docker-env)
+echo $(minikube docker-env)
 ```
+if problems, try with deleting before start: $minikube delete; minikube start
 
 ```bash
 cd projekt-apartment\projekt-apartment 
@@ -133,8 +134,17 @@ kubectl create -f user-service.yaml
 ```
 
 **To get user service ip and port:**
+
+**Windows (Powershell)**
 ```bash
 minikube ip
 kubectl describe service user | Select-String -Pattern "NodePort"
+minikube dashboard
+```
+
+**MacOs**
+```bash
+minikube ip
+kubectl describe service user | egrep NodePort:
 minikube dashboard
 ```
