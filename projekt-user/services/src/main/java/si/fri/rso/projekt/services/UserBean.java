@@ -47,7 +47,7 @@ public class UserBean {
     private UserBean userBean;
 
     @Inject
-    @DiscoverService(value = "rso-apartment", environment = "dev", version = "*")
+    @DiscoverService(value = "rso-apartment")
     private Optional<String> basePath;
 
     @PostConstruct
@@ -139,10 +139,7 @@ public class UserBean {
         return true;
     }
 
-    @CircuitBreaker(failureRatio = 0.3)
-    @Fallback(fallbackMethod = "getApartmentsFallback")
-    @CommandKey("http-get-order")
-    @Timeout(value = 500)
+
     public List<Apartment> getApartments(String userId) {
 
         if (basePath.isPresent()) {
