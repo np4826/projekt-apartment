@@ -63,7 +63,7 @@ docker run -d --name projekt-apartment-db -e POSTGRES_USER=dbuser -e POSTGRES_PA
 
 ```bash
 docker build -t rso-apartment .
-docker run  --name rso-apartment -p 8081:8081 rso-apartment
+docker run  --name rso-apartment -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8081:8081 rso-apartment
 ```
 
 ## quick test: http://localhost:8081/v1/apartment/
@@ -79,7 +79,7 @@ docker run -d --name projekt-user-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWOR
 
 ```bash
 docker build -t rso-user .
-docker run --name rso-user -p 8082:8082 rso-user
+docker run --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8082:8082 rso-user
 ```
 ## test communication: http://localhost:8082/v1/user/1
 
@@ -147,4 +147,12 @@ minikube dashboard
 minikube ip
 kubectl describe service user | egrep NodePort:
 minikube dashboard
+```
+
+You can check if etcd is running and the keys here: http://henszey.github.io/etcd-browser/
+Get all urls for services:
+```bash
+minikube service etcd --url
+minikube service apartment --url
+minikube service user --url
 ```

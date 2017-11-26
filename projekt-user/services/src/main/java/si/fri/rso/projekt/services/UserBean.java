@@ -3,17 +3,10 @@ package si.fri.rso.projekt.services;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
-import com.kumuluz.ee.fault.tolerance.annotations.*;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.User;
 
@@ -23,6 +16,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ import java.util.Optional;
 
 
 @RequestScoped
-@GroupKey("apartment")
 public class UserBean {
 
     private Logger log = LogManager.getLogger(UserBean.class.getName());
@@ -41,7 +38,7 @@ public class UserBean {
 
     private ObjectMapper objectMapper;
 
-    private HttpClient httpClient;
+    private Client httpClient;
 
     @Inject
     private UserBean userBean;
@@ -52,7 +49,7 @@ public class UserBean {
 
     @PostConstruct
     private void init() {
-        httpClient = HttpClientBuilder.create().build();
+        httpClient = ClientBuilder.newClient();
         objectMapper = new ObjectMapper();
     }
 
@@ -141,8 +138,21 @@ public class UserBean {
 
 
     public List<Apartment> getApartments(String userId) {
-
+        log.info("IN GETAPARTMENTS");
         if (basePath.isPresent()) {
+
+            try {
+                return httpClient
+                        .target(basePath.get() + "/v1/apartment?where=userId:EQ:" + userId)
+                        .request().get(new GenericType<List<Apartment>>() {
+                        });
+            } catch (WebApplicationException | ProcessingException e) {
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        return new ArrayList<>();
+        /*if (basePath.isPresent()) {
             try {
                 HttpGet request = new HttpGet(basePath.get() + "/v1/apartment?where=userId:EQ:" + userId);
                 HttpResponse response = httpClient.execute(request);
@@ -168,7 +178,7 @@ public class UserBean {
         } else {
             throw new InternalServerErrorException("Apartments service not available");
         }
-        return new ArrayList<>();
+        return new ArrayList<>();*/
     }
 
     public List<Apartment> getApartmentsFallback(String userId) {

@@ -37,6 +37,12 @@ spec:
         - containerPort: 2380
           name: server
           protocol: TCP
+        volumeMounts:
+          - mountPath: /etcd-data
+            name: etcddata
+      volumes:
+        - name: etcddata
+          emptyDir: {}
 
 ---
 

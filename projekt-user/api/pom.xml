@@ -23,21 +23,22 @@
 
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-servlet-jetty</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-jax-rs-jersey</artifactId>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-etcd</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>1.2</version>
+            <groupId>com.kumuluz.ee.cors</groupId>
+            <artifactId>kumuluzee-cors</artifactId>
         </dependency>
+        <dependency>
+            <artifactId>kumuluzee-logs-log4j2</artifactId>
+            <groupId>com.kumuluz.ee.logs</groupId>
+        </dependency>
+
     </dependencies>
 
     <build>
