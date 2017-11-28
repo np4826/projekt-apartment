@@ -123,6 +123,8 @@ kubectl delete --all services --namespace=default
 ```bash
 cd ../projekt-kubernetes
 kubectl create -f etcd.yaml
+kubectl create -f grafana-deployment.yaml
+kubectl create -f grafana-service.yaml
 kubectl create -f postgres-apartment-deployment.yaml
 kubectl create -f postgres-user-deployment.yaml
 kubectl create -f postgres-user-service.yaml

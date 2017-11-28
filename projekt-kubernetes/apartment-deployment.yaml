@@ -21,8 +21,8 @@ spec:
             value: http://etcd:2379
           - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
             value: jdbc:postgresql://postgres-apartment:5432/apartment
-          
         ports:
         - containerPort: 8081
           name: server
           protocol: TCP
+        imagePullPolicy: Always

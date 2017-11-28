@@ -22,4 +22,5 @@ spec:
           ports:
           - containerPort: 5432
             protocol: TCP
+          imagePullPolicy: Always
 

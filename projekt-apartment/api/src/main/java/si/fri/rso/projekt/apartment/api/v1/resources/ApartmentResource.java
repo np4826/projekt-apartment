@@ -1,9 +1,10 @@
 package si.fri.rso.projekt.apartment.api.v1.resources;
 
+import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.services.ApartmentBean;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -12,10 +13,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 @Path("/apartment")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Log
 public class ApartmentResource {
     @Context
     private UriInfo uriInfo;
