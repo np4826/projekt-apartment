@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: apartment
+  labels:
+    team: apartmentteam
+spec:
+  selector:
+    matchLabels:
+      app: apartment
+  endpoints:
+  - port: server

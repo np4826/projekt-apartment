@@ -25,5 +25,3 @@ spec:
         - containerPort: 8081
           name: server
           protocol: TCP
-        imagePullPolicy: Always
-        initialDelaySeconds: 20

@@ -22,6 +22,10 @@ kumuluzee:
   cors-filter:
     servlet:
       allow-origin: "*"
+  metrics:
+      web-instrumentation:
+        - name: apartment-endpoint
+          url-pattern: /v1/apartment/*
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                     <Configuration name="customers">
