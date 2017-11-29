@@ -10,7 +10,7 @@ spec:
         app: user
     spec:
       containers:
-      - image: kknp/rso-user:0.01
+      - image: kknp/rso-user:latest
         name: user
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER

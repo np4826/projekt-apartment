@@ -10,7 +10,7 @@ spec:
         app: apartment
     spec:
       containers:
-      - image: kknp/rso-apartment:0.01
+      - image: kknp/rso-apartment:latest
         name: apartment
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -21,7 +21,11 @@ spec:
             value: http://etcd:2379
           - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
             value: jdbc:postgresql://postgres-apartment:5432/apartment
+        imagePullPolicy: Always
         ports:
         - containerPort: 8081
           name: server
           protocol: TCP
+        resources:
+          limits:
+            cpu: 500m

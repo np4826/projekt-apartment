@@ -22,6 +22,12 @@ kumuluzee:
   cors-filter:
     servlet:
       allow-origin: "*"
+  health:
+      checks:
+        data-source-health-check:
+        jndi-name: jdbc/OrdersDS
+  rest-properties:
+    healthy: true
   metrics:
       web-instrumentation:
         - name: apartment-endpoint
