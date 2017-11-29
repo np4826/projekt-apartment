@@ -25,9 +25,7 @@ kumuluzee:
   health:
       checks:
         data-source-health-check:
-        jndi-name: jdbc/OrdersDS
-  rest-properties:
-    healthy: true
+        jndi-name: jdbc/ApartmentDS
   metrics:
       web-instrumentation:
         - name: apartment-endpoint
@@ -51,3 +49,6 @@ kumuluzee:
                             </Root>
                         </Loggers>
                     </Configuration>'
+rest-properties:
+  external-services:
+    healthy: true
