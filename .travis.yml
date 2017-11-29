@@ -21,11 +21,11 @@ env:
 script:
   - mvn clean package -U
   - cd projekt-apartment
-  - docker build -t "$APARTMENT_DOCKER_IMAGE" .
+  - docker build -t kknp/rso-apartment:latest .
   - cd ../projekt-user/
-  - docker build -t "$USER_DOCKER_IMAGE" .
+  - docker build -t kknp/rso-user:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push "$APARTMENT_DOCKER_IMAGE"
-  - docker push "$USER_DOCKER_IMAGE"
+  - docker push kknp/rso-apartment:latest
+  - docker push kknp/rso-user:latest
