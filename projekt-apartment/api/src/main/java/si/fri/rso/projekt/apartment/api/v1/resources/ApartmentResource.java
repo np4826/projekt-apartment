@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
+import org.eclipse.microprofile.metrics.annotation.Metered;
+
 @RequestScoped
 @Path("/apartment")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +28,7 @@ public class ApartmentResource {
     private ApartmentBean apartmentBean;
 
     @GET
+    @Metered
     public Response getApartments() {
         List<Apartment> apartments = apartmentBean.getApartments(uriInfo);
         return Response.ok(apartments).build();

@@ -26,3 +26,4 @@ spec:
           name: server
           protocol: TCP
         imagePullPolicy: Always
+        initialDelaySeconds: 20

@@ -21,11 +21,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <kumuluzee.version>2.4.1</kumuluzee.version>
         <kumuluzee-rest.version>1.1.0</kumuluzee-rest.version>
         <kumuluzee-discovery.version>1.0.0-SNAPSHOT</kumuluzee-discovery.version>
         <kumuluzee-cors.version>1.0.2</kumuluzee-cors.version>
+        <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
         <postgresql.version>42.1.4</postgresql.version>
     </properties>
 
@@ -73,6 +73,11 @@
                 <groupId>com.kumuluz.ee.cors</groupId>
                 <artifactId>kumuluzee-cors</artifactId>
                 <version>${kumuluzee-cors.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.metrics</groupId>
+                <artifactId>kumuluzee-metrics-core</artifactId>
+                <version>${kumuluzee-metrics.version}</version>
             </dependency>
 
             <dependency>
