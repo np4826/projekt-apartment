@@ -14,10 +14,6 @@ cache:
   - $HOME/.m2
   edge: true
 
-env:
-  - APARTMENT_DOCKER_IMAGE=kknp/rso-apartment:latest
-  - USER_DOCKER_IMAGE=kknp/rso-user:latest
-
 script:
   - mvn clean package -U
   - cd projekt-apartment
