@@ -1,6 +1,7 @@
 package si.fri.rso.projekt.apartment.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.services.ApartmentBean;
 
@@ -19,7 +20,7 @@ import org.eclipse.microprofile.metrics.annotation.Metered;
 @Path("/apartment")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Log
+@Log(LogParams.METRICS)
 public class ApartmentResource {
     @Context
     private UriInfo uriInfo;

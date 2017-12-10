@@ -33,5 +33,5 @@ spec:
           httpGet:
             path: /health
             port: server
-          initialDelaySeconds: 20
-          periodSeconds: 3
+          initialDelaySeconds: 40
+          periodSeconds: 5
