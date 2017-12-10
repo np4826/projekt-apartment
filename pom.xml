@@ -27,11 +27,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kumuluzee.version>2.4.1</kumuluzee.version>
         <kumuluzee-rest.version>1.1.0</kumuluzee-rest.version>
-        <kumuluzee-discovery.version>1.0.0-SNAPSHOT</kumuluzee-discovery.version>
+        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
         <kumuluzee-cors.version>1.0.2</kumuluzee-cors.version>
+        <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
+        <kumuluzee-discovery.version>1.1.0-SNAPSHOT</kumuluzee-discovery.version>
+        <kumuluzee-fault-tolerance.version>1.0.0-SNAPSHOT</kumuluzee-fault-tolerance.version>
         <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
+        <kumuluzee-security.version>1.1.0-SNAPSHOT</kumuluzee-security.version>
         <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
+        <metrics.version>3.0.2</metrics.version>
         <postgresql.version>42.1.4</postgresql.version>
+        <swagger.version>1.5.16</swagger.version>
+        <httpclient.version>4.5.3</httpclient.version>
     </properties>
 
     <repositories>
@@ -126,11 +133,6 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpclient.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kumuluz.ee.health</groupId>
-                <artifactId>kumuluzee-health</artifactId>
-                <version>${kumuluzee-health.version}</version>
             </dependency>
 
             <!-- Project modules dependencies -->

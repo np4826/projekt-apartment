@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
 
 @Path("demo")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,6 +18,8 @@ public class DemoResource {
 
     @Inject
     private RestProperties restProperties;
+
+    private Logger log = Logger.getLogger(DemoResource.class.getName());
 
     @GET
     @Path("instanceid")
@@ -32,6 +35,7 @@ public class DemoResource {
     @Path("healthy")
     public Response setHealth(Boolean healthy) {
         restProperties.setHealthy(healthy);
+        log.info("Setting health to " + healthy);
         return Response.ok().build();
     }
 
