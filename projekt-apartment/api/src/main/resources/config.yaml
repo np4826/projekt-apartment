@@ -25,7 +25,10 @@ kumuluzee:
   health:
       checks:
         data-source-health-check:
-        jndi-name: jdbc/ApartmentDS
+          jndi-name: jdbc/ApartmentDS
+        servlet:
+          mapping: /health
+          enabled: true
   metrics:
       web-instrumentation:
         - name: apartment-endpoint
