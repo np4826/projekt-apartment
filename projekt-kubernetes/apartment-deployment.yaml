@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: apartment-deployment
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -28,4 +28,10 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 500m
+            cpu: 400m
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: server
+          initialDelaySeconds: 20
+          periodSeconds: 3

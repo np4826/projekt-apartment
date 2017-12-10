@@ -50,5 +50,6 @@ kumuluzee:
                         </Loggers>
                     </Configuration>'
 rest-properties:
+  healthy: true
   external-services:
     healthy: true
