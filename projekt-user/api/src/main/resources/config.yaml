@@ -27,9 +27,9 @@ kumuluzee:
         checks:
           data-source-health-check:
             jndi-name: jdbc/UserDS
-          servlet:
-            mapping: /health
-            enabled: true
+        servlet:
+          mapping: /health
+          enabled: true
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                     <Configuration name="customers">
@@ -49,5 +49,5 @@ kumuluzee:
                             </Root>
                         </Loggers>
                     </Configuration>'
-  rest-properties:
-    healthy: true
+rest-properties:
+  healthy: true

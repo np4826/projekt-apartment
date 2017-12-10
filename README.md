@@ -152,6 +152,7 @@ minikube dashboard
 ```
 
 You can check if etcd is running and the keys here: http://henszey.github.io/etcd-browser/
+
 Get all urls for services:
 ```bash
 minikube service etcd --url
