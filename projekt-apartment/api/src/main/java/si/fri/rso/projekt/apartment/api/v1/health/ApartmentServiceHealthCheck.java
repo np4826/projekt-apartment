@@ -1,4 +1,4 @@
-package si.fri.rso.projekt.apartment.api.v1.heath;
+package si.fri.rso.projekt.apartment.api.v1.health;
 
 import org.eclipse.microprofile.health.Health;
 import org.eclipse.microprofile.health.HealthCheck;

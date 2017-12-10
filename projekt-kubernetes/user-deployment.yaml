@@ -26,3 +26,12 @@ spec:
         - containerPort: 8082
           name: server
           protocol: TCP
+        resources:
+          limits:
+            cpu: 400m
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: server
+          initialDelaySeconds: 20
+          periodSeconds: 3
