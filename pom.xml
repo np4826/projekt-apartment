@@ -37,8 +37,6 @@
         <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
         <metrics.version>3.0.2</metrics.version>
         <postgresql.version>42.1.4</postgresql.version>
-        <swagger.version>1.5.16</swagger.version>
-        <httpclient.version>4.5.3</httpclient.version>
     </properties>
 
     <repositories>
@@ -118,21 +116,6 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-core</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-jersey2-jaxrs</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
             </dependency>
 
             <!-- Project modules dependencies -->

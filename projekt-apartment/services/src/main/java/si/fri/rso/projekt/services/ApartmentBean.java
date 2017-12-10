@@ -10,11 +10,13 @@ import javax.persistence.EntityManager;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ApartmentBean {
     @Inject
     private EntityManager em;
+    private Logger log = Logger.getLogger(ApartmentBean.class.getName());
 
     public List<Apartment> getApartments(UriInfo uriInfo) {
 

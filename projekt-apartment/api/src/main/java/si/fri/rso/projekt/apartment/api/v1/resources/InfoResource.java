@@ -13,15 +13,17 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("info")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class InfoResource {
-
+    private Logger log = Logger.getLogger(DemoResource.class.getName());
     @GET
     public Response getInfo() {
+        log.info("Getting project INFO");
         JSONObject json = new JSONObject();
 
         JSONArray clani = new JSONArray();
