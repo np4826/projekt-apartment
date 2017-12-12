@@ -1,6 +1,7 @@
 package si.fri.rso.projekt.user.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import si.fri.rso.projekt.User;
 import si.fri.rso.projekt.services.UserBean;
 
@@ -13,11 +14,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
+import org.eclipse.microprofile.metrics.annotation.Metered;
+
 @RequestScoped
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Log
+@Log(LogParams.METRICS)
 public class UserResource {
 
     @Inject
@@ -28,6 +31,7 @@ public class UserResource {
 
 
     @GET
+    @Metered
     public Response getUsers() {
         List<User> users = userBean.getUsers(uriInfo);
         return Response.ok(users).build();
@@ -35,6 +39,7 @@ public class UserResource {
 
     @GET
     @Path("/{userId}")
+    @Metered
     public Response getUser(@PathParam("userId") String userId) {
 
         User user = userBean.getUserWithApartments(userId);
@@ -48,6 +53,7 @@ public class UserResource {
 
     @GET
     @Path("/simple/{userId}")
+    @Metered
     public Response getUserSimple(@PathParam("userId") String userId) {
 
         User user = userBean.getUser(userId);

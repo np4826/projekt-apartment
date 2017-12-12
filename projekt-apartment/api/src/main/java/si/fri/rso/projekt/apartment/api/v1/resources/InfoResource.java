@@ -28,7 +28,7 @@ public class InfoResource {
 
         JSONArray clani = new JSONArray();
         clani.put("np4826");
-        clani.put("kk000");
+        clani.put("kk7072");
 
         JSONArray mikrostoritve = new JSONArray();
         mikrostoritve.put("http://35.187.50.19:8082/v1/user/");
@@ -54,3 +54,4 @@ public class InfoResource {
         return Response.ok(json.toString()).build();
     }
 }
+

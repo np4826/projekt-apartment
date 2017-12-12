@@ -30,6 +30,10 @@ kumuluzee:
         servlet:
           mapping: /health
           enabled: true
+    metrics:
+        web-instrumentation:
+          - name: user-endpoint
+            url-pattern: /v1/user/*
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                     <Configuration name="user">
@@ -37,7 +41,7 @@ kumuluzee:
                             <Console name="console" target="SYSTEM_OUT">
                                 <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
                             </Console>
-                            <Socket name="logstash" host="ee4660e4-288e-4a4d-8111-82c8bcc0ab79-ls.logit.io" port="16232" protocol="tcp">
+                            <Socket name="logstash" host="a64ecac7-81f5-49d5-8ff5-199ef5b2849c-ls.logit.io" port="16502" protocol="tcp">
                                 <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
                             </Socket>
                         </Appenders>
