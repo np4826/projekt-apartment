@@ -31,8 +31,8 @@ public class InfoResource {
         clani.put("kk7072");
 
         JSONArray mikrostoritve = new JSONArray();
-        mikrostoritve.put("http://35.187.50.19:8082/v1/user/");
-        mikrostoritve.put("http://35.195.36.107:8081/v1/apartment");
+        mikrostoritve.put("http://35.195.205.42:8082/v1/user/");
+        mikrostoritve.put("http://35.205.101.132:8081/v1/apartment");
 
         JSONArray github = new JSONArray();
         github.put("https://github.com/np4826/projekt-apartment");
