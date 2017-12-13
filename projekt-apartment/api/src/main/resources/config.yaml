@@ -48,8 +48,10 @@ kumuluzee:
                             <!-- Default logger -->
                             <Root level="all">
                                 <AppenderRef ref="console" level="info"/>
-                                <AppenderRef ref="logstash" level="trace"/>
                             </Root>
+                            <AsyncLogger name="si.fri.rso.projekt.apartment.api.v1.resources.ApartmentResource" level="trace" additivity="false" includeLocation="true">
+                              <appenderRef="logstash" />
+                            </AsyncLogger>
                         </Loggers>
                     </Configuration>'
 rest-properties:
