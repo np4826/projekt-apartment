@@ -49,8 +49,10 @@ kumuluzee:
                             <!-- Default logger -->
                             <Root level="all">
                                 <AppenderRef ref="console" level="info"/>
-                                <AppenderRef ref="logstash" level="trace"/>
                             </Root>
+                            <AsyncLogger name="si.fri.rso.projekt.user.api.v1.resources.UserResource" level="trace" additivity="false" includeLocation="true">
+                              <appenderRef="logstash" />
+                            </AsyncLogger>
                         </Loggers>
                     </Configuration>'
 rest-properties:
