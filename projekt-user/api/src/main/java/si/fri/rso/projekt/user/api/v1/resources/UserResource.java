@@ -33,7 +33,7 @@ public class UserResource {
     @GET
     @Metered
     public Response getUsers() {
-        List<User> users = userBean.getUsers(uriInfo);
+        List<User> users = userBean.getUsersWithApartments(uriInfo);
         return Response.ok(users).build();
     }
 

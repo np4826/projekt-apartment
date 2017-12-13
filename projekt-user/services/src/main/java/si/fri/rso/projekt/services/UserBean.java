@@ -84,6 +84,18 @@ public class UserBean {
         return user;
     }
 
+    public List<User> getUsersWithApartments(UriInfo uriInfo){
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
+                .defaultOffset(0)
+                .build();
+        List<User> users = JPAUtils.queryEntities(em, User.class, queryParameters);
+        for(User u : users){
+            List <Apartment> apartments = userBean.getApartments(u.getId());
+            u.setApartments(apartments);
+        }
+        return users;
+    }
+
 
     public User createUser(User user) {
 
