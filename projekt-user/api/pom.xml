@@ -46,6 +46,10 @@
             <groupId>com.kumuluz.ee.metrics</groupId>
             <artifactId>kumuluzee-metrics-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+             <artifactId>hystrix-metrics-event-stream</artifactId>
+        </dependency>
 
     </dependencies>
 

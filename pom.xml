@@ -36,6 +36,7 @@
         <kumuluzee-security.version>1.1.0-SNAPSHOT</kumuluzee-security.version>
         <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
         <metrics.version>3.0.2</metrics.version>
+        <hystrix-metrics-event-stream.version>1.5.12</hystrix-metrics-event-stream.version>
         <postgresql.version>42.1.4</postgresql.version>
     </properties>
 
@@ -116,6 +117,11 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-metrics-event-stream</artifactId>
+                <version>${hystrix-metrics-event-stream.version}</version>
             </dependency>
 
             <!-- Project modules dependencies -->
