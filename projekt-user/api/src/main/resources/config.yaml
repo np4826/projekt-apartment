@@ -51,7 +51,7 @@ kumuluzee:
                                 <AppenderRef ref="console" level="info"/>
                             </Root>
                             <AsyncLogger name="si.fri.rso.projekt.user.api.v1.resources.UserResource" level="trace" additivity="false" includeLocation="true">
-                              <appenderRef="logstash" />
+                              <AppenderRef ref="logstash"/>
                             </AsyncLogger>
                         </Loggers>
                     </Configuration>'
