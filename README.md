@@ -83,6 +83,8 @@ docker run --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:
 ```
 ## test communication: http://localhost:8082/v1/user/1
 
+**Hystrix endpoint: http://localhost:8082/hystrix.stream**
+
 
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
