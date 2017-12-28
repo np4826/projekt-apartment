@@ -149,7 +149,7 @@ public class RentBean {
     public Apartment getApartment(String apartmentId) {
         log.info("IN GETAPARTMENT");
         if (basePathApartment.isPresent()) {
-            log.info("BASEPATH is present");
+            log.info("BASEPATH for APARTMENT is present");
             log.info("GETTING appartment with ID "+apartmentId);
             try {
                 return httpClient
@@ -179,7 +179,7 @@ public class RentBean {
     public User getUser(String userId) {
         log.info("IN GETUSER");
         if (basePathUser.isPresent()) {
-            log.info("BASEPATH is present");
+            log.info("BASEPATH for USER is present");
             log.info("GETTING user with ID "+userId);
             try {
                 return httpClient
@@ -192,6 +192,7 @@ public class RentBean {
                 throw new InternalServerErrorException(e);
             }
         }
+        log.info("BASEPATH for USER is not present");
         return null;
     }
 
