@@ -7,16 +7,24 @@ import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.Rent;
+import si.fri.rso.projekt.User;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +66,14 @@ public class RentBean {
                 .defaultOffset(0)
                 .build();
 
-        return JPAUtils.queryEntities(em, Rent.class, queryParameters);
+
+        List<Rent> rents = JPAUtils.queryEntities(em, Rent.class, queryParameters);
+        for(Rent r : rents)
+        {
+            r.setApartment(getApartment(r.getApartmentId()));
+            r.setUser(getUser(r.getUserId()));
+        }
+        return rents;
     }
 
     public Rent getRent(String rentId) {
@@ -127,6 +142,60 @@ public class RentBean {
         return json == null ? new ArrayList<>() : objectMapper.readValue(json,
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).getTypeFactory().constructCollectionType(List.class, Apartment.class));
     }
+
+    @CircuitBreaker(requestVolumeThreshold = 2)
+    @Fallback(fallbackMethod = "getApartmentsFallback")
+    @Timeout
+    public Apartment getApartment(String apartmentId) {
+        log.info("IN GETAPARTMENTS");
+        if (basePathApartment.isPresent()) {
+            try {
+                return httpClient
+                        .target(basePathApartment.get() + "/v1/apartment/" + apartmentId)
+                        .request().get(new GenericType<Apartment>() {
+                        });
+            } catch (WebApplicationException | ProcessingException e) {
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        return null;
+    }
+
+    public Apartment getApartmentsFallback(String apartmentId) {
+        log.info("IN GETAPARTMENTS FALLBACK");
+        Apartment apartment = new Apartment();
+        apartment.setTitle("N/A");
+        apartment.setDescription("N/A");
+        return apartment;
+    }
+
+    @CircuitBreaker(requestVolumeThreshold = 2)
+    @Fallback(fallbackMethod = "getApartmentsFallback")
+    @Timeout
+    public User getUser(String userId) {
+        log.info("IN GETAPARTMENTS");
+        if (basePathApartment.isPresent()) {
+            try {
+                return httpClient
+                        .target(basePathApartment.get() + "/v1/user/" + userId)
+                        .request().get(new GenericType<User>() {
+                        });
+            } catch (WebApplicationException | ProcessingException e) {
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        return null;
+    }
+
+    public User getUserFallback(String userId) {
+        log.info("IN GETAPARTMENTS FALLBACK");
+        User user = new User();
+        user.setFirstName("N/A");
+        return user;
+    }
+
 
     private void beginTx() {
         if (!em.getTransaction().isActive())

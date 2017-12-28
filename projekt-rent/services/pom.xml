@@ -39,9 +39,12 @@
             <artifactId>kumuluzee-discovery-etcd</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.kumuluz.ee.fault.tolerance</groupId>
+            <artifactId>kumuluzee-fault-tolerance-hystrix</artifactId>
+        </dependency>
+        <dependency>
             <groupId>si.fri.rso.projekt</groupId>
             <artifactId>apartment-models</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

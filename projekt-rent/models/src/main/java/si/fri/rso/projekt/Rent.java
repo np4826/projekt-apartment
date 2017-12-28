@@ -17,8 +17,10 @@ public class Rent {
     private String id;
 
     //DETAILS
-    private Date rent_start;
-    private Date rent_end;
+    @Column(name = "rent_start")
+    private Date rentStart;
+    @Column(name = "rent_end")
+    private Date rentEnd;
     private double price;
     private String comment;
 
@@ -38,6 +40,12 @@ public class Rent {
     @Column(name = "apartment_id")
     private String apartmentId;
 
+    @Transient
+    private Apartment apartment;
+
+    @Transient
+    private User user;
+
     //GETTERS SETTERS
     public String getId() {
         return id;
@@ -48,19 +56,19 @@ public class Rent {
     }
 
     public Date getREntStart() {
-        return rent_start;
+        return rentStart;
     }
 
     public void setRentStart(Date start) {
-        this.rent_start = start;
+        this.rentStart = start;
     }
 
     public Date getRentEnd() {
-        return rent_end;
+        return rentEnd;
     }
 
     public void setEnd(Date end) {
-        this.rent_end = end;
+        this.rentEnd = end;
     }
 
     public double getPrice() {
@@ -125,5 +133,21 @@ public class Rent {
 
     public void setApartmentId(String apartmentId) {
         this.apartmentId = apartmentId;
+    }
+
+    public Apartment getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(Apartment apartment) {
+        this.apartment = apartment;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
