@@ -1,1 +1,1 @@
-INSERT INTO rents(rent_start,rent_end,price,comment,dateApproved,approved,apartment_id,user_id) VALUES('2017-12-29','2018-01-02',500,'Check in at 15:40','2017-12-27 19:00',true,2,2);
+INSERT INTO rents(id, rent_start,rent_end,price,comment,dateApproved,approved,apartment_id,user_id) VALUES(1, '2017-12-29','2018-01-02',500,'Check in at 15:40','2017-12-27 19:00',true,2,2);
