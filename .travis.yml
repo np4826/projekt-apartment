@@ -20,8 +20,11 @@ script:
   - docker build -t kknp/rso-apartment:latest .
   - cd ../projekt-user/
   - docker build -t kknp/rso-user:latest .
+  - cd ../projekt-rent/
+  - docker build -t kknp/rso-rent:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push kknp/rso-apartment:latest
   - docker push kknp/rso-user:latest
+  - docker push kknp/rso-rent:latest

@@ -10,6 +10,7 @@
     <modules>
         <module>projekt-apartment</module>
         <module>projekt-user</module>
+        <module>projekt-rent</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -148,6 +149,18 @@
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>user-api</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>rent-models</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>rent-services</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>rent-api</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
