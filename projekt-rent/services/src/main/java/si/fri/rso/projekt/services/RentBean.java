@@ -149,12 +149,15 @@ public class RentBean {
     public Apartment getApartment(String apartmentId) {
         log.info("IN GETAPARTMENT");
         if (basePathApartment.isPresent()) {
+            log.info("BASEPATH is present");
+            log.info("GETTING appartment with ID "+apartmentId);
             try {
                 return httpClient
                         .target(basePathApartment.get() + "/v1/apartment/" + apartmentId)
                         .request().get(new GenericType<Apartment>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {
+                log.info("ERROR IN GETAPARTMENT");
                 log.error(e);
                 throw new InternalServerErrorException(e);
             }
@@ -176,12 +179,15 @@ public class RentBean {
     public User getUser(String userId) {
         log.info("IN GETUSER");
         if (basePathApartment.isPresent()) {
+            log.info("BASEPATH is present");
+            log.info("GETTING user with ID "+userId);
             try {
                 return httpClient
                         .target(basePathApartment.get() + "/v1/user/" + userId)
                         .request().get(new GenericType<User>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {
+                log.info("ERROR IN GETUSER");
                 log.error(e);
                 throw new InternalServerErrorException(e);
             }
