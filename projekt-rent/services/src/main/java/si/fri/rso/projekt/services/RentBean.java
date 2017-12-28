@@ -52,7 +52,7 @@ public class RentBean {
     private Optional<String> basePathApartment;
 
     @Inject
-    @DiscoverService(value = "rent-apartment")
+    @DiscoverService(value = "rso-user")
     private Optional<String> basePathUser;
 
     @PostConstruct
@@ -147,7 +147,7 @@ public class RentBean {
     @Fallback(fallbackMethod = "getApartmentsFallback")
     @Timeout
     public Apartment getApartment(String apartmentId) {
-        log.info("IN GETAPARTMENTS");
+        log.info("IN GETAPARTMENT");
         if (basePathApartment.isPresent()) {
             try {
                 return httpClient
@@ -163,7 +163,7 @@ public class RentBean {
     }
 
     public Apartment getApartmentsFallback(String apartmentId) {
-        log.info("IN GETAPARTMENTS FALLBACK");
+        log.info("IN GETAPARTMENT FALLBACK");
         Apartment apartment = new Apartment();
         apartment.setTitle("N/A");
         apartment.setDescription("N/A");
@@ -174,7 +174,7 @@ public class RentBean {
     @Fallback(fallbackMethod = "getApartmentsFallback")
     @Timeout
     public User getUser(String userId) {
-        log.info("IN GETAPARTMENTS");
+        log.info("IN GETUSER");
         if (basePathApartment.isPresent()) {
             try {
                 return httpClient
@@ -190,7 +190,7 @@ public class RentBean {
     }
 
     public User getUserFallback(String userId) {
-        log.info("IN GETAPARTMENTS FALLBACK");
+        log.info("IN GETUSER FALLBACK");
         User user = new User();
         user.setFirstName("N/A");
         return user;
