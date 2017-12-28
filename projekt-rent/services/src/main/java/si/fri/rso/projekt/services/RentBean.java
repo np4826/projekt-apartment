@@ -178,12 +178,12 @@ public class RentBean {
     @Timeout
     public User getUser(String userId) {
         log.info("IN GETUSER");
-        if (basePathApartment.isPresent()) {
+        if (basePathUser.isPresent()) {
             log.info("BASEPATH is present");
             log.info("GETTING user with ID "+userId);
             try {
                 return httpClient
-                        .target(basePathApartment.get() + "/v1/user/" + userId)
+                        .target(basePathUser.get() + "/v1/user/" + userId)
                         .request().get(new GenericType<User>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {
