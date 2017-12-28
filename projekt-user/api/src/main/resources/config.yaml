@@ -13,11 +13,47 @@ kumuluzee:
       username: dbuser
       password: postgres
       max-pool-size: 20
+
   config:
     etcd:
-       hosts: http://192.168.99.100:2379
-  discovery:
-    etcd:
-       hosts: http://192.168.99.100:2379
-    ttl: 20
-    ping-interval: 15
+      hosts: http://192.168.99.100:2379
+    discovery:
+      etcd:
+        hosts: http://192.168.99.100:2379
+    cors-filter:
+      servlet:
+        allow-origin: "*"
+    health:
+        checks:
+          data-source-health-check:
+            jndi-name: jdbc/UserDS
+        servlet:
+          mapping: /health
+          enabled: true
+    metrics:
+        web-instrumentation:
+          - name: user-endpoint
+            url-pattern: /v1/user/*
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                    <Configuration name="user">
+                        <Appenders>
+                            <Console name="console" target="SYSTEM_OUT">
+                                <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                            </Console>
+                            <Socket name="logstash" host="a64ecac7-81f5-49d5-8ff5-199ef5b2849c-ls.logit.io" port="16502" protocol="tcp">
+                                <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                            </Socket>
+                        </Appenders>
+                        <Loggers>
+                            <!-- Default logger -->
+                            <Root level="all">
+                                <AppenderRef ref="console" level="info"/>
+                            </Root>
+                            <AsyncLogger name="si.fri.rso.projekt.user.api.v1.resources.UserResource" level="trace" additivity="false" includeLocation="true">
+                              <AppenderRef ref="logstash"/>
+                            </AsyncLogger>
+                        </Loggers>
+                    </Configuration>'
+rest-properties:
+  healthy: true

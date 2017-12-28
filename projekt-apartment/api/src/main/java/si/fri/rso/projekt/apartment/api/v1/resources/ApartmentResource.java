@@ -1,9 +1,11 @@
 package si.fri.rso.projekt.apartment.api.v1.resources;
 
+import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.services.ApartmentBean;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -12,10 +14,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@ApplicationScoped
+import org.eclipse.microprofile.metrics.annotation.Metered;
+
+@RequestScoped
 @Path("/apartment")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Log(LogParams.METRICS)
 public class ApartmentResource {
     @Context
     private UriInfo uriInfo;
@@ -24,6 +29,7 @@ public class ApartmentResource {
     private ApartmentBean apartmentBean;
 
     @GET
+    @Metered
     public Response getApartments() {
         List<Apartment> apartments = apartmentBean.getApartments(uriInfo);
         return Response.ok(apartments).build();

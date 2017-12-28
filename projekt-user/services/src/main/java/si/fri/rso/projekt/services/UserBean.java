@@ -9,6 +9,9 @@ import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.User;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -84,6 +87,18 @@ public class UserBean {
         return user;
     }
 
+    public List<User> getUsersWithApartments(UriInfo uriInfo){
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
+                .defaultOffset(0)
+                .build();
+        List<User> users = JPAUtils.queryEntities(em, User.class, queryParameters);
+        for(User u : users){
+            List <Apartment> apartments = userBean.getApartments(u.getId());
+            u.setApartments(apartments);
+        }
+        return users;
+    }
+
 
     public User createUser(User user) {
 
@@ -136,11 +151,12 @@ public class UserBean {
         return true;
     }
 
-
+    @CircuitBreaker(requestVolumeThreshold = 2)
+    @Fallback(fallbackMethod = "getApartmentsFallback")
+    @Timeout
     public List<Apartment> getApartments(String userId) {
         log.info("IN GETAPARTMENTS");
         if (basePath.isPresent()) {
-
             try {
                 return httpClient
                         .target(basePath.get() + "/v1/apartment?where=userId:EQ:" + userId)
@@ -152,42 +168,16 @@ public class UserBean {
             }
         }
         return new ArrayList<>();
-        /*if (basePath.isPresent()) {
-            try {
-                HttpGet request = new HttpGet(basePath.get() + "/v1/apartment?where=userId:EQ:" + userId);
-                HttpResponse response = httpClient.execute(request);
-                //http://localhost:8081/v1/apartment?where=userId:EQ:1
-                int status = response.getStatusLine().getStatusCode();
-                log.info("Basepath:" + basePath.get());
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-
-                    if (entity != null)
-                        return getObjects(EntityUtils.toString(entity));
-                } else {
-                    String msg = "Remote server '" + basePath.get() + "' is responded with status " + status + ".";
-                    log.error(msg);
-                    throw new InternalServerErrorException(msg);
-                }
-
-            } catch (IOException e) {
-                String msg = e.getClass().getName() + " occured: " + e.getMessage();
-                log.error(msg);
-                throw new InternalServerErrorException(msg);
-            }
-        } else {
-            throw new InternalServerErrorException("Apartments service not available");
-        }
-        return new ArrayList<>();*/
     }
 
     public List<Apartment> getApartmentsFallback(String userId) {
-        return new ArrayList<>();
-    }
-
-    private List<Apartment> getObjects(String json) throws IOException {
-        return json == null ? new ArrayList<>() : objectMapper.readValue(json,
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).getTypeFactory().constructCollectionType(List.class, Apartment.class));
+        log.info("IN GETAPARTMENTS FALLBACK");
+        List<Apartment> apartments = new ArrayList<>();
+        Apartment apartment = new Apartment();
+        apartment.setTitle("N/A");
+        apartment.setDescription("N/A");
+        apartments.add(apartment);
+        return apartments;
     }
 
     private void beginTx() {

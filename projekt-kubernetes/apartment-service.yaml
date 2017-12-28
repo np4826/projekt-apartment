@@ -5,9 +5,10 @@ metadata:
   labels:
       app: apartment
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - port: 8081
+  - name: server
+    port: 8081
     protocol: TCP
     targetPort: 8081
   selector:

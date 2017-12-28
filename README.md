@@ -83,6 +83,8 @@ docker run --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:
 ```
 ## test communication: http://localhost:8082/v1/user/1
 
+**Hystrix endpoint: http://localhost:8082/hystrix.stream**
+
 
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
@@ -123,6 +125,8 @@ kubectl delete --all services --namespace=default
 ```bash
 cd ../projekt-kubernetes
 kubectl create -f etcd.yaml
+kubectl create -f grafana-deployment.yaml
+kubectl create -f grafana-service.yaml
 kubectl create -f postgres-apartment-deployment.yaml
 kubectl create -f postgres-user-deployment.yaml
 kubectl create -f postgres-user-service.yaml
@@ -150,6 +154,7 @@ minikube dashboard
 ```
 
 You can check if etcd is running and the keys here: http://henszey.github.io/etcd-browser/
+
 Get all urls for services:
 ```bash
 minikube service etcd --url

@@ -10,7 +10,6 @@
     <modules>
         <module>projekt-apartment</module>
         <module>projekt-user</module>
-        <module>projekt-rent</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -20,6 +19,26 @@
     <description>
         Airbnb is an online marketplace and hospitality service, enabling people to lease or rent short-term lodging including vacation rentals, apartment rentals, homestays, hostel beds, or hotel rooms.
     </description>
+
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kumuluzee.version>2.4.1</kumuluzee.version>
+        <kumuluzee-rest.version>1.1.0</kumuluzee-rest.version>
+        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
+        <kumuluzee-cors.version>1.0.2</kumuluzee-cors.version>
+        <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
+        <kumuluzee-discovery.version>1.1.0-SNAPSHOT</kumuluzee-discovery.version>
+        <kumuluzee-fault-tolerance.version>1.0.0-SNAPSHOT</kumuluzee-fault-tolerance.version>
+        <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
+        <kumuluzee-security.version>1.1.0-SNAPSHOT</kumuluzee-security.version>
+        <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
+        <metrics.version>3.0.2</metrics.version>
+        <hystrix-metrics-event-stream.version>1.5.12</hystrix-metrics-event-stream.version>
+        <postgresql.version>42.1.4</postgresql.version>
+    </properties>
 
     <repositories>
         <repository>
@@ -34,27 +53,6 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kumuluzee.version>2.4.1</kumuluzee.version>
-        <kumuluzee-rest.version>1.1.0</kumuluzee-rest.version>
-        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
-        <kumuluzee-cors.version>1.0.0-SNAPSHOT</kumuluzee-cors.version>
-        <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
-        <kumuluzee-discovery.version>1.1.0-SNAPSHOT</kumuluzee-discovery.version>
-        <kumuluzee-fault-tolerance.version>1.0.0-SNAPSHOT</kumuluzee-fault-tolerance.version>
-        <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
-        <kumuluzee-health.version>1.1.0-SNAPSHOT</kumuluzee-health.version>
-        <kumuluzee-security.version>1.1.0-SNAPSHOT</kumuluzee-security.version>
-        <metrics.version>3.0.2</metrics.version>
-
-        <postgresql.version>42.1.4</postgresql.version>
-        <swagger.version>1.5.16</swagger.version>
-        <httpclient.version>4.5.3</httpclient.version>
-    </properties>
 
     <dependencyManagement>
 
@@ -121,19 +119,9 @@
                 <version>${postgresql.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-core</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-jersey2-jaxrs</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-metrics-event-stream</artifactId>
+                <version>${hystrix-metrics-event-stream.version}</version>
             </dependency>
 
             <!-- Project modules dependencies -->
@@ -160,18 +148,6 @@
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>user-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>rent-models</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>rent-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>rent-services</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

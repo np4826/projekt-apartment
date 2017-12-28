@@ -19,5 +19,40 @@ kumuluzee:
   discovery:
     etcd:
       hosts: http://192.168.99.100:2379
-    ttl: 20
-    ping-interval: 15
+  cors-filter:
+    servlet:
+      allow-origin: "*"
+  health:
+      checks:
+        data-source-health-check:
+          jndi-name: jdbc/ApartmentDS
+      servlet:
+        mapping: /health
+        enabled: true
+  metrics:
+      web-instrumentation:
+        - name: apartment-endpoint
+          url-pattern: /v1/apartment/*
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                    <Configuration name="apartment">
+                        <Appenders>
+                            <Console name="console" target="SYSTEM_OUT">
+                                <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                            </Console>
+                            <Socket name="logstash" host="a64ecac7-81f5-49d5-8ff5-199ef5b2849c-ls.logit.io" port="16502" protocol="tcp">
+                                <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                            </Socket>
+                        </Appenders>
+                        <Loggers>
+                            <!-- Default logger -->
+                            <Root level="all">
+                                <AppenderRef ref="console" level="info"/>
+                            </Root>
+                            <AsyncLogger name="si.fri.rso.projekt.apartment.api.v1.resources.ApartmentResource" level="trace" additivity="false" includeLocation="true">
+                              <AppenderRef ref="logstash"/>
+                            </AsyncLogger>
+                        </Loggers>
+                    </Configuration>'
+rest-properties:
+  healthy: true

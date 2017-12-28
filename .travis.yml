@@ -17,14 +17,11 @@ cache:
 script:
   - mvn clean package -U
   - cd projekt-apartment
-  - docker build -t kknp/rso-apartment:0.02 .
+  - docker build -t kknp/rso-apartment:latest .
   - cd ../projekt-user/
-  - docker build -t kknp/rso-user:0.02 .
-  - cd ../projekt-rent/
-  - docker build -t kknp/rso-rent:0.02 .
+  - docker build -t kknp/rso-user:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push kknp/rso-apartment:0.02
-  - docker push kknp/rso-user:0.02
-  - docker push kknp/rso-rent:0.02
+  - docker push kknp/rso-apartment:latest
+  - docker push kknp/rso-user:latest

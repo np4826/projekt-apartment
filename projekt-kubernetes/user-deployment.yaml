@@ -10,7 +10,7 @@ spec:
         app: user
     spec:
       containers:
-      - image: kknp/rso-user:0.01
+      - image: kknp/rso-user:latest
         name: user
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -26,3 +26,12 @@ spec:
         - containerPort: 8082
           name: server
           protocol: TCP
+        resources:
+          limits:
+            cpu: 400m
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: server
+          initialDelaySeconds: 40
+          periodSeconds: 5

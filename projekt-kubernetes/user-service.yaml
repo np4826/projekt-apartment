@@ -5,7 +5,7 @@ metadata:
   labels:
       app: user
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - port: 8082
     protocol: TCP
