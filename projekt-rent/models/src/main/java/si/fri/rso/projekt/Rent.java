@@ -17,8 +17,8 @@ public class Rent {
     private String id;
 
     //DETAILS
-    private Date start;
-    private Date end;
+    private Date rent_start;
+    private Date rent_end;
     private double price;
     private String comment;
 
@@ -47,20 +47,20 @@ public class Rent {
         this.id = id;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getREntStart() {
+        return rent_start;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setRentStart(Date start) {
+        this.rent_start = start;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getRentEnd() {
+        return rent_end;
     }
 
     public void setEnd(Date end) {
-        this.end = end;
+        this.rent_end = end;
     }
 
     public double getPrice() {
