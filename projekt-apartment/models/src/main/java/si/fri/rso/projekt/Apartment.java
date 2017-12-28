@@ -21,6 +21,7 @@ public class Apartment {
     //GENERAL
     private String title;
     private String description;
+    private double pricePerNight;
 
     //APARTMENT
     private String type;
@@ -354,5 +355,13 @@ public class Apartment {
 
     public String getUserId() {
         return userId;
+    }
+
+    public double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public void setPricePerNight(double pricePerNight) {
+        this.pricePerNight = pricePerNight;
     }
 }
