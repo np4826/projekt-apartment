@@ -183,7 +183,7 @@ public class RentBean {
             log.info("GETTING user with ID "+userId);
             try {
                 return httpClient
-                        .target(basePathUser.get() + "/v1/user/" + userId)
+                        .target(basePathUser.get() + "/v1/user/simple/" + userId)
                         .request().get(new GenericType<User>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {
