@@ -2,6 +2,7 @@ package si.fri.rso.projekt.user.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
 import com.kumuluz.ee.logs.cdi.LogParams;
+import org.eclipse.microprofile.metrics.annotation.Metered;
 import si.fri.rso.projekt.User;
 import si.fri.rso.projekt.services.UserBean;
 
@@ -13,8 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
-
-import org.eclipse.microprofile.metrics.annotation.Metered;
 
 @RequestScoped
 @Path("/user")
@@ -42,7 +41,7 @@ public class UserResource {
     @Metered
     public Response getUser(@PathParam("userId") String userId) {
 
-        User user = userBean.getUserWithApartments(userId);
+        User user = userBean.getUser(userId);
 
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
