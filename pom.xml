@@ -11,6 +11,7 @@
         <module>projekt-apartment</module>
         <module>projekt-user</module>
         <module>projekt-rent</module>
+        <module>projekt-availability</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -18,7 +19,7 @@
 
     <inceptionYear>2017</inceptionYear>
     <description>
-        Airbnb is an online marketplace and hospitality service, enabling people to lease or rent short-term lodging including vacation rentals, apartment rentals, homestays, hostel beds, or hotel rooms.
+        Airbnb is an online marketplace and hospitality service, enabling people to lease or avaliability short-term lodging including vacation rentals, apartment rentals, homestays, hostel beds, or hotel rooms.
     </description>
 
 
@@ -161,6 +162,18 @@
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>rent-api</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>avaliability-models</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>avaliability-services</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>avaliability-api</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

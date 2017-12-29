@@ -1,0 +1,3 @@
+INSERT INTO avaliability(id, avaliability_start,avaliability_end,apartment_id) VALUES(1, '2017-12-01','2018-01-08',2);
+INSERT INTO avaliability(id, avaliability_start,avaliability_end,apartment_id) VALUES(1, '2018-01-11','2018-01-24',2);
+INSERT INTO avaliability(id, avaliability_start,avaliability_end,apartment_id) VALUES(1, '2018-02-02','2018-02-21',2);

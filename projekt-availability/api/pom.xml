@@ -3,23 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rent</artifactId>
+        <artifactId>avaliability</artifactId>
         <groupId>si.fri.rso.projekt</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rent-api</artifactId>
+    <artifactId>avaliability-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
-            <artifactId>rent-models</artifactId>
+            <artifactId>avaliability-models</artifactId>
         </dependency>
-
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
-            <artifactId>rent-services</artifactId>
+            <artifactId>avaliability-services</artifactId>
         </dependency>
 
         <dependency>
