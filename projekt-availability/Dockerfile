@@ -4,8 +4,8 @@ RUN mkdir /app
 
 WORKDIR /app
 
-ADD ./api/target/avaliability-api-1.0-SNAPSHOT.jar /app
+ADD ./api/target/availability-api-1.0-SNAPSHOT.jar /app
 
 EXPOSE 8084
 
-CMD ["java", "-jar", "avaliability-api-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "availability-api-1.0-SNAPSHOT.jar"]

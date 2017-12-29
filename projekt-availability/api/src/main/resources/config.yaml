@@ -1,5 +1,5 @@
 kumuluzee:
-  name: rso-avaliability
+  name: rso-availability
   env:
     name: dev
   version: 1.0.0
@@ -8,8 +8,8 @@ kumuluzee:
     http:
       port: 8084
   datasources:
-    - jndi-name: jdbc/AvaliabilityDS
-      connection-url: jdbc:postgresql://172.17.0.1:32769/avaliability
+    - jndi-name: jdbc/AvailabilityDS
+      connection-url: jdbc:postgresql://172.17.0.1:32769/availability
       username: dbuser
       password: postgres
       max-pool-size: 20

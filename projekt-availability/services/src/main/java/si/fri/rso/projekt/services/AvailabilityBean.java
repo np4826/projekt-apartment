@@ -11,7 +11,7 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.projekt.Apartment;
-import si.fri.rso.projekt.Avaliability;
+import si.fri.rso.projekt.Availability;
 import si.fri.rso.projekt.User;
 
 import javax.annotation.PostConstruct;
@@ -33,9 +33,9 @@ import java.util.Optional;
 
 
 @RequestScoped
-public class AvaliabilityBean {
+public class AvailabilityBean {
 
-    private Logger log = LogManager.getLogger(AvaliabilityBean.class.getName());
+    private Logger log = LogManager.getLogger(AvailabilityBean.class.getName());
 
     @Inject
     private EntityManager em;
@@ -45,7 +45,7 @@ public class AvaliabilityBean {
     private Client httpClient;
 
     @Inject
-    private AvaliabilityBean avaliabilityBean;
+    private AvailabilityBean availabilityBean;
 
     @Inject
     @DiscoverService(value = "rso-apartment")
@@ -61,45 +61,45 @@ public class AvaliabilityBean {
         objectMapper = new ObjectMapper();
     }
 
-    public List<Avaliability> getAvaliabilities(UriInfo uriInfo) {
+    public List<Availability> getAvaliabilities(UriInfo uriInfo) {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
                 .defaultOffset(0)
                 .build();
 
-        List<Avaliability> avaliabilities = JPAUtils.queryEntities(em, Avaliability.class, queryParameters);
-        for (Avaliability r : avaliabilities) {
+        List<Availability> avaliabilities = JPAUtils.queryEntities(em, Availability.class, queryParameters);
+        for (Availability r : avaliabilities) {
             r.setApartment(getApartment(r.getApartmentId()));
         }
         return avaliabilities;
     }
 
-    public Avaliability getAvaliability(String rentId) {
+    public Availability getAvailability(String rentId) {
 
-        Avaliability avaliability = em.find(Avaliability.class, rentId);
+        Availability availability = em.find(Availability.class, rentId);
 
-        if (avaliability == null) {
+        if (availability == null) {
             throw new NotFoundException();
         }
 
-        return avaliability;
+        return availability;
     }
 
-    public Avaliability createAvaliability(Avaliability avaliability) {
+    public Availability createAvailability(Availability availability) {
 
         try {
             beginTx();
-            em.persist(avaliability);
+            em.persist(availability);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        return avaliability;
+        return availability;
     }
 
-    public Avaliability putAvaliability(String rentId, Avaliability avaliability) {
+    public Availability putAvailability(String rentId, Availability availability) {
 
-        Avaliability c = em.find(Avaliability.class, rentId);
+        Availability c = em.find(Availability.class, rentId);
 
         if (c == null) {
             return null;
@@ -107,24 +107,24 @@ public class AvaliabilityBean {
 
         try {
             beginTx();
-            avaliability.setId(c.getId());
-            avaliability = em.merge(avaliability);
+            availability.setId(c.getId());
+            availability = em.merge(availability);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        return avaliability;
+        return availability;
     }
 
-    public boolean deleteAvaliability(String rentId) {
+    public boolean deleteAvailability(String rentId) {
 
-        Avaliability avaliability = em.find(Avaliability.class, rentId);
+        Availability availability = em.find(Availability.class, rentId);
 
-        if (avaliability != null) {
+        if (availability != null) {
             try {
                 beginTx();
-                em.remove(avaliability);
+                em.remove(availability);
                 commitTx();
             } catch (Exception e) {
                 rollbackTx();

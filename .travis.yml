@@ -22,12 +22,12 @@ script:
   - docker build -t kknp/rso-user:latest .
   - cd ../projekt-rent/
   - docker build -t kknp/rso-rent:latest .
-  - cd ../projekt-avaliability/
-  - docker build -t kknp/rso-avaliability:latest .
+  - cd ../projekt-availability/
+  - docker build -t kknp/rso-availability:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push kknp/rso-apartment:latest
   - docker push kknp/rso-user:latest
   - docker push kknp/rso-rent:latest
-  - docker push kknp/rso-avaliability:latest
+  - docker push kknp/rso-availability:latest

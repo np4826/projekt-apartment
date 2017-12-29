@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
 public class PersistenceProducer {
-    @PersistenceUnit(unitName = "avalibaility-jpa")
+    @PersistenceUnit(unitName = "availability-jpa")
     private EntityManagerFactory emf;
 
     @Produces

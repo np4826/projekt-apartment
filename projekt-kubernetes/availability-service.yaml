@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: avaliability
+  name: availability
   labels:
-      app: avaliability
+      app: availability
 spec:
   type: LoadBalancer
   ports:
@@ -11,4 +11,4 @@ spec:
     protocol: TCP
     targetPort: 8084
   selector:
-    app: avaliability
+    app: availability

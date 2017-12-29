@@ -19,7 +19,7 @@
 
     <inceptionYear>2017</inceptionYear>
     <description>
-        Airbnb is an online marketplace and hospitality service, enabling people to lease or avaliability short-term lodging including vacation rentals, apartment rentals, homestays, hostel beds, or hotel rooms.
+        Airbnb is an online marketplace and hospitality service, enabling people to lease or availability short-term lodging including vacation rentals, apartment rentals, homestays, hostel beds, or hotel rooms.
     </description>
 
 
@@ -165,15 +165,15 @@
             </dependency>
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>avaliability-models</artifactId>
+                <artifactId>availability-models</artifactId>
             </dependency>
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>avaliability-services</artifactId>
+                <artifactId>availability-services</artifactId>
             </dependency>
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
-                <artifactId>avaliability-api</artifactId>
+                <artifactId>availability-api</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

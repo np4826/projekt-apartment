@@ -1,24 +1,24 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: postgres-apartment-avaliability
+  name: postgres-apartment-availability
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: postgres-avaliability
+        app: postgres-availability
     spec:
       containers:
         - image: centos/postgresql-94-centos7
-          name: postgres-avaliability
+          name: postgres-availability
           env:
             - name: POSTGRESQL_USER
               value: dbuser
             - name: POSTGRESQL_PASSWORD
               value: postgres
             - name: POSTGRESQL_DATABASE
-              value: avaliability
+              value: availability
           ports:
           - containerPort: 5432
             protocol: TCP

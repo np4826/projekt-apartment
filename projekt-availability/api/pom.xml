@@ -3,22 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>avaliability</artifactId>
+        <artifactId>availability</artifactId>
         <groupId>si.fri.rso.projekt</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>avaliability-api</artifactId>
+    <artifactId>availability-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
-            <artifactId>avaliability-models</artifactId>
+            <artifactId>availability-models</artifactId>
         </dependency>
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
-            <artifactId>avaliability-services</artifactId>
+            <artifactId>availability-services</artifactId>
         </dependency>
 
         <dependency>

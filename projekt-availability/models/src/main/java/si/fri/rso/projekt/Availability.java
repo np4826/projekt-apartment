@@ -5,22 +5,22 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "avaliability")
+@Entity(name = "availability")
 @NamedQueries(value =
         {
-                @NamedQuery(name = "Avaliability.getAll", query = "SELECT r FROM avaliability r"),
+                @NamedQuery(name = "Availability.getAll", query = "SELECT r FROM availability r"),
         })
 @UuidGenerator(name = "idGenerator")
-public class Avaliability {
+public class Availability {
     @Id
     @GeneratedValue(generator = "idGenerator")
     private String id;
 
     //DETAILS
-    @Column(name = "avaliability_start")
-    private Date avaliabilityStart;
-    @Column(name = "avaliability_end")
-    private Date avaliabilityEnd;
+    @Column(name = "availability_start")
+    private Date availabilityStart;
+    @Column(name = "availability_end")
+    private Date availabilityEnd;
     private String comment;
 
     //APARTMENT
@@ -39,20 +39,20 @@ public class Avaliability {
         this.id = id;
     }
 
-    public Date getAvaliabilityStart() {
-        return avaliabilityStart;
+    public Date getAvailabilityStart() {
+        return availabilityStart;
     }
 
-    public void setAvaliabilityStart(Date avaliabilityStart) {
-        this.avaliabilityStart = avaliabilityStart;
+    public void setAvailabilityStart(Date availabilityStart) {
+        this.availabilityStart = availabilityStart;
     }
 
-    public Date getAvaliabilityEnd() {
-        return avaliabilityEnd;
+    public Date getAvailabilityEnd() {
+        return availabilityEnd;
     }
 
-    public void setAvaliabilityEnd(Date avaliabilityEnd) {
-        this.avaliabilityEnd = avaliabilityEnd;
+    public void setAvailabilityEnd(Date availabilityEnd) {
+        this.availabilityEnd = availabilityEnd;
     }
 
     public String getComment() {
