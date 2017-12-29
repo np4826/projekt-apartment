@@ -14,7 +14,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @RequestScoped
-@Path("/rent")
+@Path("/availability")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Log
