@@ -1,17 +1,17 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: rent-availability
+  name: avaliability-deployment
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: rent
+        app: availability
     spec:
       containers:
       - image: kknp/rso-availability:latest
-        name: rent
+        name: availability
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: minikube
