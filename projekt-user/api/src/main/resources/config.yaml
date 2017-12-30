@@ -17,25 +17,25 @@ kumuluzee:
   config:
     etcd:
       hosts: http://192.168.99.100:2379
-    discovery:
-      etcd:
-         hosts: http://192.168.99.100:2379
-      ttl: 20
-      ping-interval: 15
-    cors-filter:
+  discovery:
+    etcd:
+       hosts: http://192.168.99.100:2379
+    ttl: 20
+    ping-interval: 15
+  cors-filter:
+    servlet:
+      allow-origin: "*"
+  health:
+      checks:
+        data-source-health-check:
+          jndi-name: jdbc/UserDS
       servlet:
-        allow-origin: "*"
-    health:
-        checks:
-          data-source-health-check:
-            jndi-name: jdbc/UserDS
-        servlet:
-          mapping: /health
-          enabled: true
-    metrics:
-        web-instrumentation:
-          - name: user-endpoint
-            url-pattern: /v1/user/*
+        mapping: /health
+        enabled: true
+  metrics:
+      web-instrumentation:
+        - name: user-endpoint
+          url-pattern: /v1/user/*
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                     <Configuration name="user">

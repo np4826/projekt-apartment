@@ -3,7 +3,8 @@ To run project locally, first you need an etcd instance:
 
 **Mac:**
 ```bash
-docker run -d -p 2379:2379 \
+export HostIP="192.168.99.100"
+docker run -d -p 2379:2379 -p 2380:2380  \
     --name etcd \
     --volume=/tmp/etcd-data:/etcd-data \
     quay.io/coreos/etcd:latest \
@@ -11,10 +12,10 @@ docker run -d -p 2379:2379 \
     --name my-etcd-1 \
     --data-dir /etcd-data \
     --listen-client-urls http://0.0.0.0:2379 \
-    --advertise-client-urls http://0.0.0.0:2379 \
+    --advertise-client-urls http://${HostIP}:2379  \
     --listen-peer-urls http://0.0.0.0:2380 \
-    --initial-advertise-peer-urls http://0.0.0.0:2380 \
-    --initial-cluster my-etcd-1=http://0.0.0.0:2380 \
+    --initial-advertise-peer-urls http://${HostIP}:2380 \
+    --initial-cluster my-etcd-1=http://${HostIP}:2380 \
     --initial-cluster-token my-etcd-token \
     --initial-cluster-state new \
     --auto-compaction-retention 1 \
@@ -82,6 +83,8 @@ docker build -t rso-user .
 docker run --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8082:8082 rso-user
 ```
 ## test communication: http://localhost:8082/v1/user/1
+
+For discovery, etcd must have keys present. For apartments: environments/dev/services/rso-apartment/1.0.0/instances
 
 **Hystrix endpoint: http://localhost:8082/hystrix.stream**
 
