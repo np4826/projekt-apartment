@@ -9,7 +9,7 @@ kumuluzee:
       port: 8083
   datasources:
     - jndi-name: jdbc/RentDS
-      connection-url: jdbc:postgresql://172.17.0.1:32769/rents
+      connection-url: jdbc:postgresql://172.17.0.1:32770/rents
       username: dbuser
       password: postgres
       max-pool-size: 20

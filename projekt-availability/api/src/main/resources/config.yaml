@@ -9,7 +9,7 @@ kumuluzee:
       port: 8084
   datasources:
     - jndi-name: jdbc/AvailabilityDS
-      connection-url: jdbc:postgresql://172.17.0.1:32769/availability
+      connection-url: jdbc:postgresql://172.17.0.1:32771/availability
       username: dbuser
       password: postgres
       max-pool-size: 20

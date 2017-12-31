@@ -12,6 +12,7 @@
         <module>projekt-user</module>
         <module>projekt-rent</module>
         <module>projekt-availability</module>
+        <module>projekt-review</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -174,6 +175,18 @@
             <dependency>
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>availability-api</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>review-models</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>review-services</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>review-api</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

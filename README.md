@@ -89,6 +89,33 @@ For discovery, etcd must have keys present. For apartments: environments/dev/ser
 **Hystrix endpoint: http://localhost:8082/hystrix.stream**
 
 
+#projekt-rent, projekt-availability, projekt-review
+## Prerequisites
+
+```bash
+docker run -d --name projekt-rent-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=rents -p 32770:5432 postgres:latest
+docker run -d --name projekt-availability-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=availability -p 32771:5432 postgres:latest
+docker run -d --name projekt-review-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32772:5432 postgres:latest
+```
+
+## Run applications in Docker
+
+Clean, build and run:
+
+```bash
+docker build -t rso-rent .
+docker run  --name rso-rent -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8083:8083 rso-rent
+docker build -t rso-availability .
+docker run  --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8084:8084 rso-availability
+docker build -t rso-review .
+docker run  --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8085:8085 rso-review
+```
+
+## Quick tests: 
+
+**http://localhost:8083/v1/rent/**
+**http://localhost:8081/v1/review/**
+
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
 sudo ifconfig lo0 -alias 192.168.99.100
