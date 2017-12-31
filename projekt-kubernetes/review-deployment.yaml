@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: review-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: review
+    spec:
+      containers:
+      - image: kknp/rso-review:latest
+        name: review
+        env:
+          - name: KUMULUZEE_DISCOVERY_CLUSTER
+            value: minikube
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+            value: jdbc:postgresql://postgres-review:5432/review
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8085
+          name: server
+          protocol: TCP

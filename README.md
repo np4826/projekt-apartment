@@ -114,7 +114,7 @@ docker run  --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.1
 ## Quick tests: 
 
 **http://localhost:8083/v1/rent/**
-**http://localhost:8081/v1/review/**
+**http://localhost:8085/v1/review/**
 
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
@@ -165,6 +165,10 @@ kubectl create -f apartment-deployment.yaml
 kubectl create -f user-deployment.yaml
 kubectl create -f apartment-service.yaml
 kubectl create -f user-service.yaml
+kubectl create -f postgres-review-deployment.yaml
+kubectl create -f postgres-review-service.yaml
+kubectl create -f review-deployment.yaml
+kubectl create -f review-service.yaml
 ```
 
 **To get user service ip and port:**
@@ -190,4 +194,5 @@ Get all urls for services:
 minikube service etcd --url
 minikube service apartment --url
 minikube service user --url
+minikube service review --url
 ```
