@@ -29,6 +29,10 @@ public class UserResource {
     private UriInfo uriInfo;
 
 
+    /**
+     *
+     * @return all users with their apartments
+     */
     @GET
     @Metered
     public Response getUsers() {
@@ -36,12 +40,29 @@ public class UserResource {
         return Response.ok(users).build();
     }
 
+    /**
+     *
+     * @return all users, with apartments null
+     */
+    @GET
+    @Path("/simple/")
+    @Metered
+    public Response getUsersSimple() {
+        List<User> users = userBean.getUsers(uriInfo);
+        return Response.ok(users).build();
+    }
+
+    /**
+     *
+     * @param userId
+     * @return user with all apartments
+     */
     @GET
     @Path("/{userId}")
     @Metered
     public Response getUser(@PathParam("userId") String userId) {
 
-        User user = userBean.getUser(userId);
+        User user = userBean.getUserWithApartments(userId);
 
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -50,6 +71,11 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
+    /**
+     *
+     * @param userId
+     * @return user without apartments
+     */
     @GET
     @Path("/simple/{userId}")
     @Metered
