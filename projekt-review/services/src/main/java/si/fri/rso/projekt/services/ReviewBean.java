@@ -83,6 +83,16 @@ public class ReviewBean {
         return reviews;
     }
 
+    public List<Review> getReviewsBestRated(UriInfo uriInfo) {
+
+        QueryParameters queryParameters = QueryParameters.query("order=rating desc,reviewPublished desc&limit=3").defaultOffset(0)
+                .build();
+
+        List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
+
+        return reviews;
+    }
+
     public Review getReviewSimple(String reviewId) {
 
         Review review = em.find(Review.class, reviewId);

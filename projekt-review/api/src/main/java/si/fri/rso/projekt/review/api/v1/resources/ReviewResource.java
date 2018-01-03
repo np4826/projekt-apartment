@@ -69,6 +69,18 @@ public class ReviewResource {
         return Response.status(Response.Status.OK).entity(reviews).build();
     }
 
+    @GET
+    @Path("/bestRated")
+    public Response getReviewsBestRated() {
+
+        List<Review> reviews;
+
+        reviews = reviewBean.getReviewsBestRated(uriInfo);
+
+        return Response.status(Response.Status.OK).entity(reviews).build();
+    }
+
+
     @POST
     public Response createReview(Review review) {
 

@@ -26,7 +26,8 @@ public class User {
     //VISIBLE ON USER PROFILE
     private String firstName;
     private String description;
-    // private String country;
+    private String city;
+    private String country;
     private Date joined;
 
     @Transient
@@ -87,5 +88,21 @@ public class User {
 
     public void setApartments(List<Apartment> apartments) {
         this.apartments = apartments;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
