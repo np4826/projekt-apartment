@@ -151,9 +151,9 @@ public class UserBean {
         return true;
     }
 
- /*   @CircuitBreaker(requestVolumeThreshold = 2)
+    @CircuitBreaker(requestVolumeThreshold = 2)
     @Fallback(fallbackMethod = "getApartmentsFallback")
-    @Timeout*/
+    @Timeout
     public List<Apartment> getApartments(String userId) {
         log.info("IN GETAPARTMENTS");
         if (basePath.isPresent()) {

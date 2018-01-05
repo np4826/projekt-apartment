@@ -42,7 +42,7 @@ docker run -d -p 2379:2379 `
     -cors="*"
 ```
 
-This needs to be set on Mac to work:
+This needs to be set on Mac for discovery to work (otherwise you have to change config files):
 ```bash
 sudo ifconfig lo0 alias 192.168.99.100
 ```
@@ -96,6 +96,8 @@ For discovery, etcd must have keys present. For apartments: environments/dev/ser
 docker run -d --name projekt-rent-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=rents -p 32770:5432 postgres:latest
 docker run -d --name projekt-availability-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=availability -p 32771:5432 postgres:latest
 docker run -d --name projekt-review-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32772:5432 postgres:latest
+docker run -d --name projekt-event-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=events -p 32773:5432 postgres:latest
+docker run -d --name projekt-recommendation-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32774:5432 postgres:latest
 ```
 
 ## Run applications in Docker
@@ -109,12 +111,21 @@ docker build -t rso-availability .
 docker run  --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8084:8084 rso-availability
 docker build -t rso-review .
 docker run  --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8085:8085 rso-review
+docker build -t rso-event .
+docker run  --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8086:8086 rso-event
+docker build -t rso-recommendation .
+docker run  --name rso-recommendation -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8087:8087 rso-recommendation
 ```
 
 ## Quick tests: 
 
 **http://localhost:8083/v1/rent/**
+
+**http://localhost:8084/v1/availability**
+
 **http://localhost:8085/v1/review/**
+
+**http://localhost:8086/v1/event/**
 
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
