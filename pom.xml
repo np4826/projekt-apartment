@@ -13,6 +13,7 @@
         <module>projekt-rent</module>
         <module>projekt-availability</module>
         <module>projekt-review</module>
+        <module>projekt-event</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -41,6 +42,7 @@
         <metrics.version>3.0.2</metrics.version>
         <hystrix-metrics-event-stream.version>1.5.12</hystrix-metrics-event-stream.version>
         <postgresql.version>42.1.4</postgresql.version>
+        <kumuluzee-streaming-kafka.version>1.0.0-SNAPSHOT</kumuluzee-streaming-kafka.version>
     </properties>
 
     <repositories>
@@ -188,6 +190,19 @@
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>review-api</artifactId>
             </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>event-models</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>event-services</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>event-api</artifactId>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

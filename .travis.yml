@@ -26,6 +26,8 @@ script:
   - docker build -t kknp/rso-availability:latest .
   - cd ../projekt-review/
   - docker build -t kknp/rso-review:latest .
+  - cd ../projekt-event/
+  - docker build -t kknp/rso-event:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
@@ -34,3 +36,4 @@ after_success:
   - docker push kknp/rso-rent:latest
   - docker push kknp/rso-availability:latest
   - docker push kknp/rso-review:latest
+  - docker push kknp/rso-event:latest

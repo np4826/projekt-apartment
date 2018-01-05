@@ -1,6 +1,7 @@
 package si.fri.rso.projekt.review.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
+import si.fri.rso.projekt.Message;
 import si.fri.rso.projekt.Review;
 import si.fri.rso.projekt.services.ReviewBean;
 
@@ -21,6 +22,9 @@ import java.util.List;
 public class ReviewResource {
     @Inject
     private ReviewBean reviewBean;
+
+    @Inject
+    private ProducerResource producerResource;
 
     @Context
     private UriInfo uriInfo;
@@ -93,7 +97,10 @@ public class ReviewResource {
         else {
             review = reviewBean.createReview(review);
         }
-
+        String content = "New rating submitted on apartment";
+        if (review.getComment() != null)
+            content = "New review on apartment";
+        producerResource.produceMessage(new Message(review.getApartmentId(), content, "lbu290s1-default"));
         if (review.getId() != null) {
             return Response.status(Response.Status.CREATED).entity(review).build();
         } else {

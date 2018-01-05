@@ -1,15 +1,15 @@
 kumuluzee:
-  name: rso-review
+  name: rso-event
   env:
     name: dev
   version: 1.0.0
   server:
-    base-url: http://localhost:8085
+    base-url: http://172.17.0.1:8086
     http:
-      port: 8085
+      port: 8086
   datasources:
-    - jndi-name: jdbc/ReviewDS
-      connection-url: jdbc:postgresql://172.17.0.1:32772/reviews
+    - jndi-name: jdbc/EventDS
+      connection-url: jdbc:postgresql://172.17.0.1:32773/events
       username: dbuser
       password: postgres
       max-pool-size: 20
@@ -23,16 +23,14 @@ kumuluzee:
     ping-interval: 15
   streaming:
     kafka:
-      producer:
+      consumer:
         bootstrap-servers: velomobile-01.srvs.cloudkafka.com:9094
         group-id: group1
-        acks: all
-        retries: 0
-        batch-size: 16384
-        linger-ms: 1
-        buffer-memory: 33554432
-        key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        enable-auto-commit: true
+        auto-commit-interval-ms: 1000
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
         security-protocol: SASL_SSL
         sasl-mechanism: SCRAM-SHA-256
         sasl-jaas-config: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="lbu290s1" password="47YuTfNEY2qOXgcIYcEW-eX36rDJD0pX";'

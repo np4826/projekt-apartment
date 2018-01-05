@@ -9,7 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
 public class PersistenceProducer {
-    @PersistenceUnit(unitName = "review-jpa")
+    @PersistenceUnit(unitName = "event-jpa")
     private EntityManagerFactory emf;
 
     @Produces

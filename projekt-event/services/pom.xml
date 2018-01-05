@@ -3,18 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>review</artifactId>
+        <artifactId>event</artifactId>
         <groupId>si.fri.rso.projekt</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>review-services</artifactId>
+    <artifactId>event-services</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
-            <artifactId>review-models</artifactId>
+            <artifactId>event-models</artifactId>
         </dependency>
 
         <dependency>

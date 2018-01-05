@@ -1,6 +1,5 @@
 package si.fri.rso.projekt.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
@@ -10,11 +9,11 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.projekt.Apartment;
-import si.fri.rso.projekt.Review;
+import si.fri.rso.projekt.Event;
 import si.fri.rso.projekt.User;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.InternalServerErrorException;
@@ -25,16 +24,14 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
-@RequestScoped
-public class ReviewBean {
+@ApplicationScoped
+public class EventBean {
 
-    private Logger log = LogManager.getLogger(ReviewBean.class.getName());
+    private Logger log = LogManager.getLogger(EventBean.class.getName());
 
     @Inject
     private EntityManager em;
@@ -43,7 +40,7 @@ public class ReviewBean {
     private Client httpClient;
 
     @Inject
-    private ReviewBean reviewBean;
+    private EventBean eventBean;
 
     @Inject
     @DiscoverService(value = "rso-apartment")
@@ -58,82 +55,82 @@ public class ReviewBean {
         httpClient = ClientBuilder.newClient();
     }
 
-    public List<Review> getReviews(UriInfo uriInfo) {
+    public List<Event> getEvents(UriInfo uriInfo) {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
                 .defaultOffset(0)
                 .build();
 
 
-        List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
-        for(Review r : reviews)
+        List<Event> events = JPAUtils.queryEntities(em, Event.class, queryParameters);
+        for(Event r : events)
         {
-            r.setApartment(reviewBean.getApartment(r.getApartmentId()));
-            r.setUser(reviewBean.getUser(r.getUserId()));
+            r.setApartment(eventBean.getApartment(r.getApartmentId()));
+            r.setUser(eventBean.getUser(r.getUserId()));
         }
-        return reviews;
+        return events;
     }
 
-    public List<Review> getReviewsFilter(UriInfo uriInfo) {
+    public List<Event> getEventsFilter(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
                 .build();
 
-        List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
+        List<Event> events = JPAUtils.queryEntities(em, Event.class, queryParameters);
 
-        return reviews;
+        return events;
     }
 
-    public List<Review> getReviewsBestRated(UriInfo uriInfo) {
+    public List<Event> getLastEvents(UriInfo uriInfo) {
 
-        QueryParameters queryParameters = QueryParameters.query("order=rating desc,reviewPublished desc&limit=3").defaultOffset(0)
+        QueryParameters queryParameters = QueryParameters.query("order=eventPublished desc").defaultOffset(0)
                 .build();
 
-        List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
+        List<Event> events = JPAUtils.queryEntities(em, Event.class, queryParameters);
 
-        return reviews;
+        return events;
     }
 
-    public Review getReviewSimple(String reviewId) {
+    public Event getEventSimple(String eventId) {
 
-        Review review = em.find(Review.class, reviewId);
+        Event event = em.find(Event.class, eventId);
 
-        if (review == null) {
+        if (event == null) {
             throw new NotFoundException();
         }
 
-        return review;
+        return event;
     }
 
-    public Review getReview(String reviewId) {
+    public Event getEvent(String eventId) {
 
-        Review review = em.find(Review.class, reviewId);
+        Event event = em.find(Event.class, eventId);
 
-        if (review == null) {
+        if (event == null) {
             throw new NotFoundException();
         }
 
-        review.setApartment(reviewBean.getApartment(review.getApartmentId()));
-        review.setUser(reviewBean.getUser(review.getUserId()));
+        event.setApartment(eventBean.getApartment(event.getApartmentId()));
+        event.setUser(eventBean.getUser(event.getUserId()));
 
-        return review;
+        return event;
     }
 
-    public Review createReview(Review review) {
+    public Event createEvent(Event event) {
 
         try {
             beginTx();
-            em.persist(review);
+            em.persist(event);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        return review;
+        return event;
     }
 
-    public Review putReview(String reviewId, Review review) {
+    public Event putEvent(String eventId, Event event) {
 
-        Review c = em.find(Review.class, reviewId);
+        Event c = em.find(Event.class, eventId);
 
         if (c == null) {
             return null;
@@ -141,24 +138,24 @@ public class ReviewBean {
 
         try {
             beginTx();
-            review.setId(c.getId());
-            review = em.merge(review);
+            event.setId(c.getId());
+            event = em.merge(event);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
-        return review;
+        return event;
     }
 
-    public boolean deleteReview(String reviewId) {
+    public boolean deleteEvent(String eventId) {
 
-        Review review = em.find(Review.class, reviewId);
+        Event event = em.find(Event.class, eventId);
 
-        if (review != null) {
+        if (event != null) {
             try {
                 beginTx();
-                em.remove(review);
+                em.remove(event);
                 commitTx();
             } catch (Exception e) {
                 rollbackTx();
@@ -175,7 +172,7 @@ public class ReviewBean {
     @Timeout
     public Apartment getApartment(String apartmentId) {
         log.info("IN GETAPARTMENT");
-        if (basePathApartment.isPresent()) {
+        if (basePathApartment.isPresent() && apartmentId != null) {
             log.info("GETTING appartment with ID "+apartmentId);
             try {
                 return httpClient
@@ -204,7 +201,7 @@ public class ReviewBean {
     @Timeout
     public User getUser(String userId) {
         log.info("IN GETUSER");
-        if (basePathUser.isPresent()) {
+        if (basePathUser.isPresent() && userId != null) {
             log.info("GETTING user with ID "+userId+" and url:"+basePathUser);
             try {
                 return httpClient
