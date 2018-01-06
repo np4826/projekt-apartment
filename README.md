@@ -76,37 +76,37 @@ Call in root folder:
 ```bash
 cd projekt-apartment
 docker build -t rso-apartment .
-docker run -d --name rso-apartment -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8081:8081 rso-apartment
+docker run -d --name rso-apartment -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8081:8081 rso-apartment
 
 cd ..
 
 cd projekt-user
 docker build -t rso-user .
-docker run -d --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8082:8082 rso-user
+docker run -d --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8082:8082 rso-user
 
 cd ..
 
 cd projekt-rent
 docker build -t rso-rent .
-docker run -d --name rso-rent -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8083:8083 rso-rent
+docker run -d --name rso-rent -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8083:8083 rso-rent
 
 cd ..
 
 cd projekt-availability
 docker build -t rso-availability .
-docker run -d --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8084:8084 rso-availability
+docker run -d --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8084:8084 rso-availability
 
 cd ..
 
 cd projekt-review
 docker build -t rso-review .
-docker run -d --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8085:8085 rso-review
+docker run -d --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8085:8085 rso-review
 
 cd ..
 
 cd projekt-event
 docker build -t rso-event .
-docker run -d --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8086:8086 rso-event
+docker run -d --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8086:8086 rso-event
 ```
 
 ## Quick tests: 
