@@ -58,7 +58,7 @@ sudo ifconfig lo0 alias 192.168.99.100
 
 **Windows**
 ```bash
-netsh interface ip add address "Ethernet" 33.33.33.33 255.255.255.255
+netsh interface ip add address "Ethernet" 192.168.99.100 255.255.255.255
 ```
 
 **Postgress deployment**
