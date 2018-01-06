@@ -24,7 +24,7 @@ docker run -d -p 2379:2379 -p 2380:2380  \
 
 **Windows (PowerShell):**
 ```bash
-docker run -d -p 2379:2379 `
+docker run -d -p 2379:2379 -p 2380:2380 `
     --name etcd `
     --volume=/tmp/etcd-data:/etcd-data `
     quay.io/coreos/etcd:latest `
@@ -32,10 +32,10 @@ docker run -d -p 2379:2379 `
     --name my-etcd-1 `
     --data-dir /etcd-data `
     --listen-client-urls http://0.0.0.0:2379 `
-    --advertise-client-urls http://0.0.0.0:2379 `
+    --advertise-client-urls http://${ip}:2379 `
     --listen-peer-urls http://0.0.0.0:2380 `
-    --initial-advertise-peer-urls http://0.0.0.0:2380 `
-    --initial-cluster my-etcd-1=http://0.0.0.0:2380 `
+    --initial-advertise-peer-urls http://${ip}:2380 `
+    --initial-cluster my-etcd-1=http://${ip}:2380 `
     --initial-cluster-token my-etcd-token `
     --initial-cluster-state new `
     --auto-compaction-retention 1 `
@@ -156,29 +156,40 @@ mvn clean package
 docker build -t projekt-user:v1 .
 ```
 
-** To delete all items from minikube **
+**To delete all items from minikube**
 ```bash
 kubectl delete --all pods --namespace=default
 kubectl delete --all deployments --namespace=default
 kubectl delete --all services --namespace=default
 ```
 
+**Create deployments and services**
 ```bash
 cd ../projekt-kubernetes
 kubectl create -f etcd.yaml
-kubectl create -f grafana-deployment.yaml
-kubectl create -f grafana-service.yaml
 kubectl create -f postgres-apartment-deployment.yaml
 kubectl create -f postgres-user-deployment.yaml
+kubectl create -f postgres-rent-deployment.yaml
+kubectl create -f postgres-availability-deployment.yaml
+kubectl create -f postgres-review-deployment.yaml
 kubectl create -f postgres-user-service.yaml
 kubectl create -f postgres-apartment-service.yaml
+kubectl create -f postgres-rent-service.yaml
+kubectl create -f postgres-availability-service.yaml
+kubectl create -f postgres-review-service.yaml
+kubectl create -f postgres-review-service.yaml
+kubectl create -f grafana-deployment.yaml
+kubectl create -f grafana-service.yaml
 kubectl create -f apartment-deployment.yaml
 kubectl create -f user-deployment.yaml
-kubectl create -f apartment-service.yaml
-kubectl create -f user-service.yaml
-kubectl create -f postgres-review-deployment.yaml
-kubectl create -f postgres-review-service.yaml
+kubectl create -f rent-deployment.yaml
+kubectl create -f availability-deployment.yaml
 kubectl create -f review-deployment.yaml
+
+kubectl create -f user-service.yaml
+kubectl create -f apartment-service.yaml
+kubectl create -f rent-service.yaml
+kubectl create -f availability-service.yaml
 kubectl create -f review-service.yaml
 ```
 
@@ -206,4 +217,27 @@ minikube service etcd --url
 minikube service apartment --url
 minikube service user --url
 minikube service review --url
+```
+
+# Google cloud
+**Connection**
+```bash
+gcloud container clusters get-credentials osnovno --zone europe-west1-b --project ascendant-volt-186015
+```
+
+**Kubernetes proxy**
+```bash
+kubectl proxy
+```
+Kubernetes dashboard will be avaliable on http://localhost:8001/ui/
+
+**Stop all containers**
+```bash
+gcloud container clusters resize osnovno --size=0 --zone=europe-west1-b
+```
+
+**Change kubectl context**
+```bash
+kubectl config get-contexts
+kubectl config use-context minikube
 ```
