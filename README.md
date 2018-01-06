@@ -31,6 +31,7 @@ docker run -d -p 2379:2379 -p 2380:2380  \
 
 **Windows (PowerShell):**
 ```bash
+$HostIP = "192.168.99.100"
 docker run -d -p 2379:2379 -p 2380:2380 `
     --name etcd `
     --volume=/tmp/etcd-data:/etcd-data `
@@ -41,8 +42,8 @@ docker run -d -p 2379:2379 -p 2380:2380 `
     --listen-client-urls http://0.0.0.0:2379 `
     --advertise-client-urls http://${ip}:2379 `
     --listen-peer-urls http://0.0.0.0:2380 `
-    --initial-advertise-peer-urls http://${ip}:2380 `
-    --initial-cluster my-etcd-1=http://${ip}:2380 `
+    --initial-advertise-peer-urls http://${HostIP}:2380 `
+    --initial-cluster my-etcd-1=http://${HostIP}:2380 `
     --initial-cluster-token my-etcd-token `
     --initial-cluster-state new `
     --auto-compaction-retention 1 `
