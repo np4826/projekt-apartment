@@ -1,5 +1,12 @@
+# Local deployment
+## Project build
+
+Call in root folder:
+```bash
+mvn clean package -U
+```
+
 ## Prerequisites
-To run project locally, first you need an etcd instance: 
 
 **Mac:**
 ```bash
@@ -42,82 +49,72 @@ docker run -d -p 2379:2379 -p 2380:2380 `
     -cors="*"
 ```
 
-This needs to be set on Mac for discovery to work (otherwise you have to change config files):
+This needs to be set for discovery to work (otherwise you have to change config files):
+
+**Mac**
 ```bash
 sudo ifconfig lo0 alias 192.168.99.100
 ```
 
-
-Call in root folder:
+**Windows**
 ```bash
-mvn clean package
+netsh interface ip add address "Ethernet" 33.33.33.33 255.255.255.255
 ```
 
-# projekt-apartment
-## Prerequisites
-
+**Postgress deployment**
 ```bash
 docker run -d --name projekt-apartment-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=apartment -p 32768:5432 postgres:latest
-```
-
-## Run application in Docker
-
-```bash
-docker build -t rso-apartment .
-docker run  --name rso-apartment -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8081:8081 rso-apartment
-```
-
-## quick test: http://localhost:8081/v1/apartment/
-
-# projekt-user
-## Prerequisites
-
-```bash
 docker run -d --name projekt-user-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=users -p 32769:5432 postgres:latest
-```
-
-## Run application in Docker
-
-```bash
-docker build -t rso-user .
-docker run --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8082:8082 rso-user
-```
-## test communication: http://localhost:8082/v1/user/1
-
-For discovery, etcd must have keys present. For apartments: environments/dev/services/rso-apartment/1.0.0/instances
-
-**Hystrix endpoint: http://localhost:8082/hystrix.stream**
-
-
-#projekt-rent, projekt-availability, projekt-review
-## Prerequisites
-
-```bash
 docker run -d --name projekt-rent-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=rents -p 32770:5432 postgres:latest
 docker run -d --name projekt-availability-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=availability -p 32771:5432 postgres:latest
 docker run -d --name projekt-review-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32772:5432 postgres:latest
 docker run -d --name projekt-event-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=events -p 32773:5432 postgres:latest
-docker run -d --name projekt-recommendation-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32774:5432 postgres:latest
 ```
 
-## Run applications in Docker
-
-Clean, build and run:
-
+## Run application in Docker
+Call in root folder:
 ```bash
+cd projekt-apartment
+docker build -t rso-apartment .
+docker run -d --name rso-apartment -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8081:8081 rso-apartment
+
+cd ..
+
+cd projekt-user
+docker build -t rso-user .
+docker run -d --name rso-user -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8082:8082 rso-user
+
+cd ..
+
+cd projekt-rent
 docker build -t rso-rent .
-docker run  --name rso-rent -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8083:8083 rso-rent
+docker run -d --name rso-rent -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8083:8083 rso-rent
+
+cd ..
+
+cd projekt-availability
 docker build -t rso-availability .
-docker run  --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8084:8084 rso-availability
+docker run -d --name rso-availability -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8084:8084 rso-availability
+
+cd ..
+
+cd projekt-review
 docker build -t rso-review .
-docker run  --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8085:8085 rso-review
+docker run -d --name rso-review -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8085:8085 rso-review
+
+cd ..
+
+cd projekt-event
 docker build -t rso-event .
-docker run  --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8086:8086 rso-event
-docker build -t rso-recommendation .
-docker run  --name rso-recommendation -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.99.100:2379 -p 8087:8087 rso-recommendation
+docker run -d --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8086:8086 rso-event
 ```
 
 ## Quick tests: 
+**http://localhost:8081/v1/apartment/**
+
+**http://localhost:8082/v1/user/**
+
+**Hystrix endpoint: http://localhost:8082/hystrix.stream**
 
 **http://localhost:8083/v1/rent/**
 
@@ -127,11 +124,11 @@ docker run  --name rso-recommendation -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.
 
 **http://localhost:8086/v1/event/**
 
+
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
 sudo ifconfig lo0 -alias 192.168.99.100
 ```
-
 
 # Kubernetes
 ## Prerequisites
@@ -167,19 +164,22 @@ kubectl delete --all services --namespace=default
 ```bash
 cd ../projekt-kubernetes
 kubectl create -f etcd.yaml
+
 kubectl create -f postgres-apartment-deployment.yaml
 kubectl create -f postgres-user-deployment.yaml
 kubectl create -f postgres-rent-deployment.yaml
 kubectl create -f postgres-availability-deployment.yaml
 kubectl create -f postgres-review-deployment.yaml
+
 kubectl create -f postgres-user-service.yaml
 kubectl create -f postgres-apartment-service.yaml
 kubectl create -f postgres-rent-service.yaml
 kubectl create -f postgres-availability-service.yaml
 kubectl create -f postgres-review-service.yaml
-kubectl create -f postgres-review-service.yaml
+
 kubectl create -f grafana-deployment.yaml
 kubectl create -f grafana-service.yaml
+
 kubectl create -f apartment-deployment.yaml
 kubectl create -f user-deployment.yaml
 kubectl create -f rent-deployment.yaml
