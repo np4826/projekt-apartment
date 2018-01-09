@@ -9,7 +9,7 @@ import java.util.Date;
 @NamedQueries(value =
 {
     @NamedQuery(name = "Apartment.getAll", query = "SELECT a FROM apartment a"),
-    @NamedQuery(name = "Apartment.findByCustomer", query = "SELECT a FROM apartment a WHERE a.userId = " +":userId")
+    @NamedQuery(name = "Apartment.findByUser", query = "SELECT a FROM apartment a WHERE a.userId = " +":userId")
 })
 @UuidGenerator(name = "idGenerator")
 public class Apartment {

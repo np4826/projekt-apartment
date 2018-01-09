@@ -80,6 +80,17 @@ public class EventResource {
         return Response.status(Response.Status.OK).entity(events).build();
     }
 
+    @GET
+    @Path("/recommended/{userId}")
+    public Response getRecommendedEventsForUser(@PathParam("userId") String userId) {
+
+        List<Event> events;
+
+        events = eventBean.getRecommendedEventsForUser(userId);
+
+        return Response.status(Response.Status.OK).entity(events).build();
+    }
+
 
     @POST
     public Response createEvent(Event event) {

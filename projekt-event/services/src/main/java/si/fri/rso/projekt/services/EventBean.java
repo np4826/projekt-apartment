@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @ApplicationScoped
@@ -88,6 +90,15 @@ public class EventBean {
         List<Event> events = JPAUtils.queryEntities(em, Event.class, queryParameters);
 
         return events;
+    }
+
+    public List<Event> getRecommendedEventsForUser(String userId) {
+        User u = eventBean.getUser(userId, true);
+        //List<String> apartments = u.getApartments().stream().map(Apartment::getId).collect(Collectors.toList());
+        TypedQuery<Event> query = em.createNamedQuery("Event.getRecommendedForUser", Event.class);
+        query.setParameter("userId", userId);
+        //query.setParameter("apartments", apartments);
+        return query.getResultList();
     }
 
     public Event getEventSimple(String eventId) {
@@ -196,16 +207,24 @@ public class EventBean {
         return apartment;
     }
 
+
+    public User getUser(String userId) {
+        return getUser(userId, false);
+    }
+
     @CircuitBreaker(requestVolumeThreshold = 2)
     @Fallback(fallbackMethod = "getUserFallback")
     @Timeout
-    public User getUser(String userId) {
+    public User getUser(String userId, boolean withApartments) {
         log.info("IN GETUSER");
         if (basePathUser.isPresent() && userId != null) {
+            String simple = "simple/";
+            if (withApartments)
+                simple = "";
             log.info("GETTING user with ID "+userId+" and url:"+basePathUser);
             try {
                 return httpClient
-                        .target(basePathUser.get() + "/v1/user/simple/" + userId)
+                        .target(basePathUser.get() + "/v1/user/" + simple + userId)
                         .request().get(new GenericType<User>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {

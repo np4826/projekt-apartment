@@ -14,6 +14,7 @@
         <module>projekt-availability</module>
         <module>projekt-review</module>
         <module>projekt-event</module>
+        <module>projekt-recommendation</module>
     </modules>
     <packaging>pom</packaging>
 
