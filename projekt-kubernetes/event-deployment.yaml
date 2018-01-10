@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: event-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: event
+    spec:
+      containers:
+      - image: kknp/rso-event:latest
+        name: event
+        env:
+          - name: KUMULUZEE_DISCOVERY_CLUSTER
+            value: minikube
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+            value: jdbc:postgresql://postgres-event:5432/event
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8086
+          name: server
+          protocol: TCP

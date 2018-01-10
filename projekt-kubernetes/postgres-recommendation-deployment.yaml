@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: postgres-apartment-recommendation
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-recommendation
+    spec:
+      containers:
+        - image: centos/postgresql-94-centos7
+          name: postgres-recommendation
+          env:
+            - name: POSTGRESQL_USER
+              value: dbuser
+            - name: POSTGRESQL_PASSWORD
+              value: postgres
+            - name: POSTGRESQL_DATABASE
+              value: recommendation
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          imagePullPolicy: Always
+
