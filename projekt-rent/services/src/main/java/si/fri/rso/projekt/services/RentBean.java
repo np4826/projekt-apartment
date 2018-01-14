@@ -29,9 +29,7 @@ import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RequestScoped
@@ -106,9 +104,20 @@ public class RentBean {
                                 "&end=" + df.format(rent.getRentEnd()).toString())
                         .request().get(new GenericType<Boolean>() {
                         });
-                return check;
+
+                log.info("RENT AVAILABILITY TEST 1 RETURNED "+ check);
+
+                List<Rent> test = em.createNamedQuery("Rent.getByApartmentAndDates")
+                        .setParameter("apartmentId",rent.getApartmentId())
+                        .setParameter("rStart", rent.getRentStart())
+                        .setParameter("rEnd",rent.getRentEnd())
+                        .getResultList();
+
+                log.info("RENT AVAILABILITY TEST 2 RETURNED "+test.size()+" RESULTS");
+
+                return check && test.size()==0;
             } catch (WebApplicationException | ProcessingException e) {
-                log.info("ERROR IN CHECKRENT");
+                log.info("ERROR IN CHECK RENT");
                 log.error(e);
                 throw new InternalServerErrorException(e);
             }
