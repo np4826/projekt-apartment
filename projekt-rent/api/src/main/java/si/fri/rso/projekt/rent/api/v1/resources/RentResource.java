@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RequestScoped
 @Path("/rent")
@@ -25,6 +26,7 @@ public class RentResource {
     @Context
     private UriInfo uriInfo;
 
+    private Logger log = Logger.getLogger(RentResource.class.getName());
 
     @GET
     public Response getRents() {
@@ -60,11 +62,21 @@ public class RentResource {
 
     @POST
     public Response createRent(Rent rent) {
-
+        log.info("Creating new rent");
         if (rent.getUserId() == null || rent.getApartmentId().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
-            rent = rentBean.createRent(rent);
+            //PREVERI AVAILABILITY
+            if(rentBean.checkRent(rent)){
+                log.info("New rent - Dates OK");
+                rent = rentBean.createRent(rent);
+            }
+            else{
+                log.info("New rent - Dates NOT OK");
+                return Response.status(Response.Status.CONFLICT)
+                        .entity("APARTMENT NOT AVAILABLE BETWEEN PROVIDED DATES!")
+                        .build();
+            }
         }
 
         if (rent.getId() != null) {

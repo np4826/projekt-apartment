@@ -9,6 +9,10 @@ import java.util.Date;
 @NamedQueries(value =
         {
                 @NamedQuery(name = "Availability.getAll", query = "SELECT r FROM availability r"),
+                @NamedQuery(name = "Availability.getByApartmentAndDates", query = "SELECT r FROM availability r " +
+                        "WHERE r.apartmentId = :apartmentId " +
+                        "AND r.availabilityStart < :aStart " +
+                        "AND r.availabilityEnd > :aEnd")
         })
 @UuidGenerator(name = "idGenerator")
 public class Availability {

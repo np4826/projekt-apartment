@@ -27,6 +27,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,10 @@ public class RentBean {
     @DiscoverService(value = "rso-user")
     private Optional<String> basePathUser;
 
+    @Inject
+    @DiscoverService(value = "rso-availability")
+    private Optional<String> basePathAvailability;
+
     @PostConstruct
     private void init() {
         httpClient = ClientBuilder.newClient();
@@ -79,6 +85,8 @@ public class RentBean {
     public Rent getRent(String rentId) {
 
         Rent rent = em.find(Rent.class, rentId);
+        rent.setApartment(getApartment(rent.getApartmentId()));
+        rent.setUser(getUser(rent.getUserId()));
 
         if (rent == null) {
             throw new NotFoundException();
@@ -87,8 +95,29 @@ public class RentBean {
         return rent;
     }
 
-    public Rent createRent(Rent rent) {
+    public Boolean checkRent(Rent rent){
+        if (basePathAvailability.isPresent()) {
+            log.info("BASEPATH for AVAILABILITY is present");
+            try {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Boolean check = httpClient
+                        .target(basePathAvailability.get() + "/v1/availability/check?apartmentId="+rent.getApartmentId()+
+                                "&start=" + df.format(rent.getRentStart()).toString() +
+                                "&end=" + df.format(rent.getRentEnd()).toString())
+                        .request().get(new GenericType<Boolean>() {
+                        });
+                return check;
+            } catch (WebApplicationException | ProcessingException e) {
+                log.info("ERROR IN CHECKRENT");
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        log.info("BASEPATH for AVAILABILITY is not present");
+        return false;
+    }
 
+    public Rent createRent(Rent rent) {
         try {
             beginTx();
             em.persist(rent);

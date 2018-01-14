@@ -28,6 +28,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,15 +74,23 @@ public class AvailabilityBean {
         return avaliabilities;
     }
 
-    public Availability getAvailability(String rentId) {
-
-        Availability availability = em.find(Availability.class, rentId);
+    public Availability getAvailability(String availabilityId) {
+        Availability availability = em.find(Availability.class, availabilityId);
 
         if (availability == null) {
             throw new NotFoundException();
         }
 
         return availability;
+    }
+
+    public Boolean getCheckAvailability(String apartmentId, Date start, Date end){
+        List<Availability> availability = em.createNamedQuery("Availability.getByApartmentAndDates")
+                .setParameter("apartmentId",apartmentId)
+                .setParameter("aStart", start)
+                .setParameter("aEnd",end)
+                .getResultList();
+        return availability.size()>=1;
     }
 
     public Availability createAvailability(Availability availability) {
@@ -97,9 +106,9 @@ public class AvailabilityBean {
         return availability;
     }
 
-    public Availability putAvailability(String rentId, Availability availability) {
+    public Availability putAvailability(String availabilityId, Availability availability) {
 
-        Availability c = em.find(Availability.class, rentId);
+        Availability c = em.find(Availability.class, availabilityId);
 
         if (c == null) {
             return null;
@@ -117,9 +126,9 @@ public class AvailabilityBean {
         return availability;
     }
 
-    public boolean deleteAvailability(String rentId) {
+    public boolean deleteAvailability(String availabilityId) {
 
-        Availability availability = em.find(Availability.class, rentId);
+        Availability availability = em.find(Availability.class, availabilityId);
 
         if (availability != null) {
             try {

@@ -1,6 +1,6 @@
 Param(
   [string]$ip = "192.168.99.100",
-  [switch]$build = $false
+  [switch]$build = $true
 )
 
 Write-Host "Ustavljanje containerjev"
@@ -9,9 +9,9 @@ docker stop ((docker ps | Select-string projekt-) -split '\n' | Foreach {  ($_ -
 docker stop ((docker ps | Select-string etcd) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
 
 Write-Host "`nBrisanje containerjev"
-docker rm $((docker ps -a | Select-string rso-) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
-docker rm $((docker ps -a | Select-string projekt-) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
-docker rm $((docker ps -a | Select-string etcd) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
+docker rm -f $((docker ps -a | Select-string rso-) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
+docker rm -f $((docker ps -a | Select-string projekt-) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
+docker rm -f $((docker ps -a | Select-string etcd) -split '\n' | Foreach {  ($_ -split '\s+')[0] })
 
 Write-Host "`nBrisanje slik"
 if($build){

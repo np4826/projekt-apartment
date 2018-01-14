@@ -55,7 +55,7 @@ public class Rent {
         this.id = id;
     }
 
-    public Date getREntStart() {
+    public Date getRentStart() {
         return rentStart;
     }
 

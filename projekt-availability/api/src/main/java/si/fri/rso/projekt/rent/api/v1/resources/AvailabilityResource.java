@@ -11,7 +11,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @RequestScoped
 @Path("/availability")
@@ -46,10 +50,28 @@ public class AvailabilityResource {
     }
 
     @GET
-    @Path("/simple/{rentId}")
-    public Response getRentSimple(@PathParam("rentId") String rentId) {
+    @Path("/check")
+    public Response getCheckAvailability(@QueryParam("apartmentId") String apartmentId,
+                                         @QueryParam("start") String  start,
+                                         @QueryParam("end") String  end) {
+        Date dateStart;
+        Date dateEnd;
+        try {
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            dateStart = format.parse(start);
+            dateEnd = format.parse(end);
+            Boolean rezultat = availabilityBean.getCheckAvailability(apartmentId,dateStart,dateEnd);
+            return Response.status(Response.Status.OK).entity(rezultat).build();
+        } catch(Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
 
-        Availability availability = availabilityBean.getAvailability(rentId);
+    @GET
+    @Path("/simple/{availabilityId}")
+    public Response getAvailabilitySimple(@PathParam("availabilityId") String availabilityId) {
+
+        Availability availability = availabilityBean.getAvailability(availabilityId);
 
         if (availability == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,7 +81,7 @@ public class AvailabilityResource {
     }
 
     @POST
-    public Response createRent(Availability availability) {
+    public Response createAvailability(Availability availability) {
 
         if (availability.getApartmentId().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -75,10 +97,10 @@ public class AvailabilityResource {
     }
 
     @PUT
-    @Path("{rentId}")
-    public Response putRent(@PathParam("rentId") String rentId, Availability availability) {
+    @Path("{availabilityId}")
+    public Response putAvailability(@PathParam("availabilityId") String availabilityId, Availability availability) {
 
-        availability = availabilityBean.putAvailability(rentId, availability);
+        availability = availabilityBean.putAvailability(availabilityId, availability);
 
         if (availability == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -91,10 +113,10 @@ public class AvailabilityResource {
     }
 
     @DELETE
-    @Path("{rentId}")
-    public Response deleteRent(@PathParam("rentId") String rentId) {
+    @Path("{availabilityId}")
+    public Response deleteAvailability(@PathParam("availabilityId") String availabilityId) {
 
-        boolean deleted = availabilityBean.deleteAvailability(rentId);
+        boolean deleted = availabilityBean.deleteAvailability(availabilityId);
 
         if (deleted) {
             return Response.status(Response.Status.GONE).build();
