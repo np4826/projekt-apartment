@@ -25,8 +25,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -84,7 +83,7 @@ public class EventBean {
 
     public List<Event> getLastEvents(UriInfo uriInfo) {
 
-        QueryParameters queryParameters = QueryParameters.query("order=eventPublished desc").defaultOffset(0)
+        QueryParameters queryParameters = QueryParameters.query("order=eventPublished desc &limit=10").defaultOffset(0)
                 .build();
 
         List<Event> events = JPAUtils.queryEntities(em, Event.class, queryParameters);
@@ -94,10 +93,16 @@ public class EventBean {
 
     public List<Event> getRecommendedEventsForUser(String userId) {
         User u = eventBean.getUser(userId, true);
-        //List<String> apartments = u.getApartments().stream().map(Apartment::getId).collect(Collectors.toList());
-        TypedQuery<Event> query = em.createNamedQuery("Event.getRecommendedForUser", Event.class);
+        TypedQuery<Event> query;
+        if (u.getApartments() != null && !u.getApartments().isEmpty()){
+            query = em.createNamedQuery("Event.getRecommendedForUser", Event.class);
+            List<String> apartments = u.getApartments().stream().map(Apartment::getId).collect(Collectors.toCollection(ArrayList::new));
+            query.setParameter("apartments", apartments);
+        }
+        else {
+            query = em.createNamedQuery("Event.getInterestingForUser", Event.class);
+        }
         query.setParameter("userId", userId);
-        //query.setParameter("apartments", apartments);
         return query.getResultList();
     }
 

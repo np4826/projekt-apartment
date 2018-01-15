@@ -28,6 +28,7 @@ public class EventResource {
 
     @GET
     public Response getEvents() {
+        //http://localhost:8086/v1/event?filter=apartmentId:EQ:2
         List<Event> events = eventBean.getEvents(uriInfo);
         return Response.ok(events).build();
     }
@@ -56,17 +57,6 @@ public class EventResource {
         }
 
         return Response.status(Response.Status.OK).entity(event).build();
-    }
-
-    @GET
-    @Path("/filtered")
-    public Response getEventsFiltered() {
-        //http://localhost:8085/v1/event/filtered?filter=apartmentId:EQ:1
-        List<Event> events;
-
-        events = eventBean.getEventsFilter(uriInfo);
-
-        return Response.status(Response.Status.OK).entity(events).build();
     }
 
     @GET

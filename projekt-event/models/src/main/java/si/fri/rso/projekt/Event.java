@@ -9,8 +9,10 @@ import java.util.Date;
 @NamedQueries(value =
         {
                 @NamedQuery(name = "Event.getAll", query = "SELECT r FROM events r"),
-                @NamedQuery(name = "Event.getRecommendedForUser", query = "SELECT e FROM events e WHERE e.userId != "+
-                    ":userId ORDER BY e.eventPublished DESC"),
+                @NamedQuery(name = "Event.getInterestingForUser", query = "SELECT e FROM events e WHERE e.apartmentId IS NULL or e.userId != "+
+                        ":userId ORDER BY e.eventPublished DESC"),
+                @NamedQuery(name = "Event.getRecommendedForUser", query = "SELECT e FROM events e WHERE e.apartmentId IS NULL or e.userId != "+
+                    ":userId and e.apartmentId NOT IN :apartments ORDER BY e.eventPublished DESC")
         })
 
 @UuidGenerator(name = "idGenerator")
