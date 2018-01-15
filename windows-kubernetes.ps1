@@ -14,6 +14,8 @@ kubectl create -f postgres-availability-deployment.yaml
 kubectl create -f postgres-review-deployment.yaml
 kubectl create -f postgres-event-deployment.yaml
 kubectl create -f postgres-recommendation-deployment.yaml
+kubectl create -f postgres-payment-deployment.yaml
+
 
 kubectl create -f postgres-user-service.yaml
 kubectl create -f postgres-apartment-service.yaml
@@ -22,6 +24,7 @@ kubectl create -f postgres-availability-service.yaml
 kubectl create -f postgres-review-service.yaml
 kubectl create -f postgres-event-service.yaml
 kubectl create -f postgres-recommendation-service.yaml
+kubectl create -f postgres-payment-service.yaml
 
 Write-Host "`GRAFANA"
 
@@ -37,7 +40,7 @@ kubectl create -f availability-deployment.yaml
 kubectl create -f review-deployment.yaml
 kubectl create -f event-deployment.yaml
 kubectl create -f recommendation-deployment.yaml
-
+kubectl create -f payment-deployment.yaml
 
 Write-Host "`nMikroservices - service"
 kubectl create -f user-service.yaml
@@ -47,6 +50,7 @@ kubectl create -f availability-service.yaml
 kubectl create -f review-service.yaml
 kubectl create -f event-service.yaml
 kubectl create -f recommendation-service.yaml
+kubectl create -f payment-service.yaml
 
 Write-Host "`nMikroservices - scale"
 kubectl autoscale deployment apartment-deployment --min=1 --max=10

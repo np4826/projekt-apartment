@@ -11,6 +11,7 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.projekt.Apartment;
+import si.fri.rso.projekt.CutObject;
 import si.fri.rso.projekt.Rent;
 import si.fri.rso.projekt.User;
 
@@ -24,12 +25,17 @@ import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @RequestScoped
@@ -126,10 +132,39 @@ public class RentBean {
         return false;
     }
 
+    public void afterCreateRent(Rent rent){
+        log.info("RENT - CUTTING AVAILABILITY BY RENT "+basePathAvailability.isPresent());
+        if (basePathAvailability.isPresent()) {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+            CutObject cutObject = new CutObject();
+            cutObject.apartmentId = rent.getApartmentId();
+            cutObject.start = df.format(rent.getRentStart()).toString();
+            cutObject.end = df.format(rent.getRentEnd()).toString();
+
+            log.info("RENT - CALLING CUT METHOD");
+            log.info("RENT - METHOD CUT ON "+basePathAvailability.get() + "/v1/availability/cut");
+
+            try{
+                Response cutResult = httpClient
+                        .target(basePathAvailability.get() + "/v1/availability/cut")
+                        .request(MediaType.APPLICATION_JSON)
+                        .post(Entity.json(cutObject));
+
+                log.info("RENT - CUT COMPLETED WITH STATUS "+cutResult.getStatus());
+            }
+            catch (Exception e){
+                log.error(e.getMessage());
+            }
+        }
+    }
+
     public Rent createRent(Rent rent) {
         try {
             beginTx();
+            log.info("CREATING NEW RENT");
             em.persist(rent);
+            afterCreateRent(rent);
             commitTx();
         } catch (Exception e) {
             rollbackTx();

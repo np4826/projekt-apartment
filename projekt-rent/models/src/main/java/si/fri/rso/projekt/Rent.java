@@ -11,8 +11,8 @@ import java.util.Date;
                 @NamedQuery(name = "Rent.getAll", query = "SELECT r FROM rents r"),
                 @NamedQuery(name = "Rent.getByApartmentAndDates", query = "SELECT r FROM rents r " +
                         "WHERE r.apartmentId = :apartmentId " +
-                        "AND r.rentStart < :rStart " +
-                        "AND r.rentEnd > :rEnd")
+                        "AND r.rentStart >= :rStart " +
+                        "AND r.rentEnd <= :rEnd")
         })
 @UuidGenerator(name = "idGenerator")
 public class Rent {

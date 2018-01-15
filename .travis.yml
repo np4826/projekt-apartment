@@ -30,6 +30,8 @@ script:
   - docker build -t kknp/rso-event:latest .
   - cd ../projekt-recommendation/
   - docker build -t kknp/rso-recommendation:latest .
+  - cd ../projekt-payment/
+  - docker build -t kknp/rso-payment:latest .
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
@@ -40,3 +42,4 @@ after_success:
   - docker push kknp/rso-review:latest
   - docker push kknp/rso-event:latest
   - docker push kknp/rso-recommendation:latest
+  - docker push kknp/rso-payment:latest

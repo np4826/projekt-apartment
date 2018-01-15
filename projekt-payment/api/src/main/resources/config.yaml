@@ -1,0 +1,60 @@
+kumuluzee:
+  name: rso-payment
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://172.17.0.1:8088
+    http:
+      port: 8088
+  datasources:
+    - jndi-name: jdbc/PaymentDS
+      connection-url: jdbc:postgresql://172.17.0.1:32775/payment
+      username: dbuser
+      password: postgres
+      max-pool-size: 20
+  config:
+    etcd:
+      hosts: http://192.168.99.100:2379
+  discovery:
+    etcd:
+       hosts: http://192.168.99.100:2379
+    ttl: 20
+    ping-interval: 15
+  cors-filter:
+    servlet:
+      allow-origin: "*"
+  health:
+      checks:
+        data-source-health-check:
+          jndi-name: jdbc/PaymentDS
+      servlet:
+        mapping: /health
+        enabled: true
+  metrics:
+      web-instrumentation:
+        - name: payment-endpoint
+          url-pattern: /v1/payment/*
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                    <Configuration name="payment">
+                        <Appenders>
+                            <Console name="console" target="SYSTEM_OUT">
+                                <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                            </Console>
+                            <Socket name="logstash" host="5c22dc36-c099-4c36-a724-97865bd0ce0b-ls.logit.io" port="21054" protocol="tcp">
+                                <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                            </Socket>
+                        </Appenders>
+                        <Loggers>
+                            <!-- Default logger -->
+                            <Root level="all">
+                                <AppenderRef ref="console" level="info"/>
+                            </Root>
+                            <AsyncLogger name="si.fri.rso.projekt.payment.api.v1.resources.PaymentResource" level="trace" additivity="false" includeLocation="true">
+                              <AppenderRef ref="logstash"/>
+                            </AsyncLogger>
+                        </Loggers>
+                    </Configuration>'
+rest-properties:
+  healthy: true

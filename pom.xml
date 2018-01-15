@@ -15,6 +15,7 @@
         <module>projekt-review</module>
         <module>projekt-event</module>
         <module>projekt-recommendation</module>
+        <module>projekt-payment</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -203,7 +204,18 @@
                 <groupId>si.fri.rso.projekt</groupId>
                 <artifactId>event-api</artifactId>
             </dependency>
-
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-models</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-services</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-api</artifactId>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
