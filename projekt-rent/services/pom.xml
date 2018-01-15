@@ -49,7 +49,6 @@
         <dependency>
             <groupId>si.fri.rso.projekt</groupId>
             <artifactId>availability-models</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

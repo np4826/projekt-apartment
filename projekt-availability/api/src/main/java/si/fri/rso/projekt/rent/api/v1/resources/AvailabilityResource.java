@@ -2,6 +2,7 @@ package si.fri.rso.projekt.rent.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.projekt.Availability;
+import si.fri.rso.projekt.CutObject;
 import si.fri.rso.projekt.services.AvailabilityBean;
 
 import javax.enterprise.context.RequestScoped;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 @RequestScoped
 @Path("/availability")
@@ -28,6 +30,8 @@ public class AvailabilityResource {
 
     @Context
     private UriInfo uriInfo;
+
+    private Logger log = Logger.getLogger(AvailabilityResource.class.getName());
 
 
     @GET
@@ -65,6 +69,25 @@ public class AvailabilityResource {
         } catch(Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @POST
+    @Path("/cut")
+    public Response postAvailabilityCut(CutObject input) {
+        log.info("IN CUT METHOD");
+        Date dateStart;
+        Date dateEnd;
+        try {
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            dateStart = format.parse(input.start);
+            dateEnd = format.parse(input.end);
+            availabilityBean.AvailabilityCut(input.apartmentId,dateStart,dateEnd);
+            return Response.status(Response.Status.OK).entity(true).build();
+        } catch(Exception e) {
+            log.info("ERROR IN CUT METHOD");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
     }
 
     @GET

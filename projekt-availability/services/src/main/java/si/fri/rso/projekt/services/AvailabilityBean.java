@@ -84,13 +84,62 @@ public class AvailabilityBean {
         return availability;
     }
 
-    public Boolean getCheckAvailability(String apartmentId, Date start, Date end){
-        List<Availability> availability = em.createNamedQuery("Availability.getByApartmentAndDates")
+    private List<Availability> getAvailabilitiesByApartmentAndDate(String apartmentId, Date start, Date end){
+        return em.createNamedQuery("Availability.getByApartmentAndDates")
                 .setParameter("apartmentId",apartmentId)
                 .setParameter("aStart", start)
                 .setParameter("aEnd",end)
                 .getResultList();
-        return availability.size()>=1;
+    }
+
+    public Boolean getCheckAvailability(String apartmentId, Date start, Date end){
+        return getAvailabilitiesByApartmentAndDate(apartmentId,start,end).size()>=1;
+    }
+
+    public void AvailabilityCut(String apartmentId, Date start, Date end){
+        List<Availability> availabilities = getAvailabilitiesByApartmentAndDate(apartmentId,start,end);
+        log.info("CUTTING AVAILABILITIES FOR APARTMENT "+apartmentId+" BETWEEN "+start+" AND "+end);
+        log.info("THERE ARE "+availabilities.size()+" AVAILABILITES TO CHECK");
+        for(Availability a : availabilities){
+            // VMESNI TERMIN
+            if(a.getAvailabilityStart() != start){
+                log.info("CUTTING FIRST PART OF AVAILABILY "+a.getId());
+                //PRVI DEL
+                Availability tmp = new Availability();
+                tmp.setApartmentId(a.getApartmentId());
+                tmp.setAvailabilityStart(a.getAvailabilityStart());
+                tmp.setAvailabilityEnd(start);
+                tmp.setComment(a.getComment());
+                this.createAvailability(tmp);
+
+                // DRUGI DEL
+                if(a.getAvailabilityEnd() != end){
+                    log.info("CUTTING SECOND PART OF AVAILABILY "+a.getId());
+                    tmp = new Availability();
+                    tmp.setApartmentId(a.getApartmentId());
+                    tmp.setAvailabilityStart(end);
+                    tmp.setAvailabilityEnd(a.getAvailabilityEnd());
+                    tmp.setComment(a.getComment());
+                    this.createAvailability(tmp);
+                }
+            }
+            // OD ZACETKA
+            else{
+                if(a.getAvailabilityEnd() != end){
+                    log.info("CUTTING SECOND PART OF AVAILABILY "+a.getId());
+                    Availability tmp = new Availability();
+                    tmp.setAvailabilityStart(end);
+                    tmp.setAvailabilityEnd(a.getAvailabilityEnd());
+                    tmp.setApartmentId(a.getApartmentId());
+                    tmp.setComment(a.getComment());
+                    this.createAvailability(tmp);
+                }
+            }
+
+            //BRISI ORIGINAL
+            log.info("DELETING ORIGINAL AVAILABILY "+a.getId());
+            this.deleteAvailability(a.getId());
+        }
     }
 
     public Availability createAvailability(Availability availability) {
