@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>si.fri.rso.projekt</groupId>
+        <artifactId>rso-projekt</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>payment</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>models</module>
+        <module>services</module>
+        <module>api</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kumuluzee.version>2.4.1</kumuluzee.version>
+        <kumuluzee-rest.version>1.1.0</kumuluzee-rest.version>
+        <kumuluzee-discovery.version>1.1.0-SNAPSHOT</kumuluzee-discovery.version>
+        <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
+        <kumuluzee-cors.version>1.0.2</kumuluzee-cors.version>
+        <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
+        <kumuluzee-streaming.version>1.0.0-SNAPSHOT</kumuluzee-streaming.version>
+        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
+        <postgresql.version>42.1.4</postgresql.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.kumuluz.ee</groupId>
+                <artifactId>kumuluzee-bom</artifactId>
+                <version>${kumuluzee.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kumuluz.ee.rest</groupId>
+                <artifactId>kumuluzee-rest-core</artifactId>
+                <version>${kumuluzee-rest.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kumuluz.ee.logs</groupId>
+                <artifactId>kumuluzee-logs-log4j2</artifactId>
+                <version>${kumuluzee-logs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kumuluz.ee.discovery</groupId>
+                <artifactId>kumuluzee-discovery-etcd</artifactId>
+                <version>${kumuluzee-discovery.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.cors</groupId>
+                <artifactId>kumuluzee-cors</artifactId>
+                <version>${kumuluzee-cors.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.metrics</groupId>
+                <artifactId>kumuluzee-metrics-core</artifactId>
+                <version>${kumuluzee-metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.health</groupId>
+                <artifactId>kumuluzee-health</artifactId>
+                <version>${kumuluzee-health.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-models</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>si.fri.rso.projekt</groupId>
+                <artifactId>payment-services</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

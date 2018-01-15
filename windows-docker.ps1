@@ -46,6 +46,7 @@ docker run -d --name projekt-availability-db -e POSTGRES_USER=dbuser -e POSTGRES
 docker run -d --name projekt-review-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32772:5432 postgres:latest
 docker run -d --name projekt-event-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=events -p 32773:5432 postgres:latest
 docker run -d --name projekt-recommendation-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reviews -p 32774:5432 postgres:latest
+docker run -d --name projekt-payment-db -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=payments -p 32775:5432 postgres:latest
 
 if ($build) 
 {
@@ -84,6 +85,10 @@ docker run -d --name rso-event -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8086:80
 cd ../projekt-recommendation
 docker build -t rso-recommendation .
 docker run -d --name rso-recommendation -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8087:8087 rso-recommendation
+
+cd ../projekt-payment
+docker build -t rso-payment .
+docker run -d --name rso-payment -e KUMULUZEE_CONFIG_ETCD_HOSTS=$etcdIP -p 8088:8088 rso-payment
 
 cd ..
 Write-Host "`nDONE :-)"
