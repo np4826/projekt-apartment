@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: postgres-apartment-rent
+  name: postgres-rent-deployment
 spec:
   replicas: 1
   template:

@@ -26,10 +26,10 @@ kubectl create -f postgres-event-service.yaml
 kubectl create -f postgres-recommendation-service.yaml
 kubectl create -f postgres-payment-service.yaml
 
-Write-Host "`GRAFANA"
+#Write-Host "`GRAFANA"
 
-kubectl create -f grafana-deployment.yaml
-kubectl create -f grafana-service.yaml
+#kubectl create -f grafana-deployment.yaml
+#kubectl create -f grafana-service.yaml
 
 Start-Sleep -s 20
 
