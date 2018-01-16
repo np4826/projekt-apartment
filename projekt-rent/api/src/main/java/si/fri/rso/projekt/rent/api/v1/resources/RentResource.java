@@ -35,6 +35,13 @@ public class RentResource {
     }
 
     @GET
+    @Path("/simple/")
+    public Response getUsersSimple() {
+        List<Rent> rents = rentBean.getRentsSimple(uriInfo);
+        return Response.ok(rents).build();
+    }
+
+    @GET
     @Path("/{rentId}")
     public Response getRent(@PathParam("rentId") String rentId) {
 

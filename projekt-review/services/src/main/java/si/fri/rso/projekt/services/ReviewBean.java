@@ -1,6 +1,5 @@
 package si.fri.rso.projekt.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
@@ -10,6 +9,7 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.projekt.Apartment;
+import si.fri.rso.projekt.Rent;
 import si.fri.rso.projekt.Review;
 import si.fri.rso.projekt.User;
 
@@ -25,7 +25,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +51,10 @@ public class ReviewBean {
     @Inject
     @DiscoverService(value = "rso-user")
     private Optional<String> basePathUser;
+
+    @Inject
+    @DiscoverService(value = "rso-rent")
+    private Optional<String> basePathRent;
 
     @PostConstruct
     private void init() {
@@ -83,9 +86,13 @@ public class ReviewBean {
         return reviews;
     }
 
-    public List<Review> getReviewsBestRated(UriInfo uriInfo) {
 
-        QueryParameters queryParameters = QueryParameters.query("order=rating desc,reviewPublished desc&limit=3").defaultOffset(0)
+    public List<Review> getReviewsBestRated(String ownerId) {
+        //localhost:8085/v1/review/filtered?filter=userId:NEQ:3&order=rating%20desc,reviewPublished%20desc
+        String query = "order=rating desc,reviewPublished desc&limit=10";
+        if (ownerId != null)
+            query = "filter=userId:NEQ:" + ownerId + "&" + query;
+        QueryParameters queryParameters = QueryParameters.query(query).defaultOffset(0)
                 .build();
 
         List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
@@ -116,6 +123,16 @@ public class ReviewBean {
         review.setUser(reviewBean.getUser(review.getUserId()));
 
         return review;
+    }
+
+    public boolean existsReview(String userId, String apartmentId){
+        String query = "filter=userId:EQ:" +userId+"%20apartmentId:EQ:"+apartmentId;
+        QueryParameters queryParameters = QueryParameters.query(query).defaultOffset(0)
+                .build();
+
+        List<Review> reviews = JPAUtils.queryEntities(em, Review.class, queryParameters);
+
+        return !reviews.isEmpty();
     }
 
     public Review createReview(Review review) {
@@ -226,6 +243,37 @@ public class ReviewBean {
         User user = new User();
         user.setFirstName("N/A");
         return user;
+    }
+
+
+    @CircuitBreaker(requestVolumeThreshold = 2)
+    @Fallback(fallbackMethod = "getRentFallback")
+    @Timeout
+    public List<Rent> getRent(String userId, String apartmentId) {
+        log.info("IN GETRENT:"+basePathRent);
+        if (basePathRent.isPresent()) {
+            try {//http://localhost:8083/v1/rent/simple?filter=userId:EQ:3%20apartmentId:EQ:2
+                return httpClient
+                        .target(basePathRent.get() + "/v1/rent/simple?filter=userId:EQ:" + userId+"%20apartmentId:EQ:"+apartmentId)
+                        .request().get(new GenericType<List<Rent>>() {
+                        });
+            } catch (WebApplicationException | ProcessingException e) {
+                log.info("ERROR IN GETRENT");
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        log.info("BASEPATH for RENT is not present");
+        return null;
+    }
+
+    public List<Rent>  getRentFallback(String userId, String apartmentId) {
+        log.info("IN GETRENT FALLBACK");
+        List<Rent>  rents= new ArrayList<>();
+        Rent rent = new Rent();
+        rent.setComment("N/A");
+        rents.add(rent);
+        return rents;
     }
 
 

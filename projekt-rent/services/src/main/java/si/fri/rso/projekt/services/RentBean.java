@@ -80,9 +80,18 @@ public class RentBean {
         List<Rent> rents = JPAUtils.queryEntities(em, Rent.class, queryParameters);
         for(Rent r : rents)
         {
-            r.setApartment(getApartment(r.getApartmentId()));
-            r.setUser(getUser(r.getUserId()));
+            r.setApartment(rentBean.getApartment(r.getApartmentId()));
+            r.setUser(rentBean.getUser(r.getUserId()));
         }
+        return rents;
+    }
+
+    public List<Rent> getRentsSimple(UriInfo uriInfo) {
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
+                .defaultOffset(0)
+                .build();
+
+        List<Rent> rents = JPAUtils.queryEntities(em, Rent.class, queryParameters);
         return rents;
     }
 
@@ -247,7 +256,7 @@ public class RentBean {
     }
 
     @CircuitBreaker(requestVolumeThreshold = 2)
-    @Fallback(fallbackMethod = "getApartmentsFallback")
+    @Fallback(fallbackMethod = "getUserFallback")
     @Timeout
     public User getUser(String userId) {
         log.info("IN GETUSER");
