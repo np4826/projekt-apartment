@@ -31,6 +31,8 @@ Write-Host "`GRAFANA"
 kubectl create -f grafana-deployment.yaml
 kubectl create -f grafana-service.yaml
 
+Start-Sleep -s 20
+
 Write-Host "`nMikroservices - deploymet"
 
 kubectl create -f apartment-deployment.yaml
