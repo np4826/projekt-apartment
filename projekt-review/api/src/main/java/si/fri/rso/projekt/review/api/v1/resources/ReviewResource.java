@@ -1,7 +1,9 @@
 package si.fri.rso.projekt.review.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
+import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.Message;
+import si.fri.rso.projekt.Rent;
 import si.fri.rso.projekt.Review;
 import si.fri.rso.projekt.services.ReviewBean;
 
@@ -32,6 +34,13 @@ public class ReviewResource {
 
     @GET
     public Response getReviews() {
+        List<Review> reviews = reviewBean.getReviews(uriInfo);
+        return Response.ok(reviews).build();
+    }
+
+    @GET
+    @Path("/simple/")
+    public Response getReviewsSimple() {
         List<Review> reviews = reviewBean.getReviews(uriInfo);
         return Response.ok(reviews).build();
     }
@@ -79,7 +88,18 @@ public class ReviewResource {
 
         List<Review> reviews;
 
-        reviews = reviewBean.getReviewsBestRated(uriInfo);
+        reviews = reviewBean.getReviewsBestRated(null);
+
+        return Response.status(Response.Status.OK).entity(reviews).build();
+    }
+
+    @GET
+    @Path("/bestRatedWithoutOwner/{ownerId}")
+    public Response getReviewsBestRatedWithoutOwner(@PathParam("ownerId") String ownerId) {
+
+        List<Review> reviews;
+
+        reviews = reviewBean.getReviewsBestRated(ownerId);
 
         return Response.status(Response.Status.OK).entity(reviews).build();
     }
@@ -87,13 +107,26 @@ public class ReviewResource {
 
     @POST
     public Response createReview(Review review) {
-
-        if (review.getUserId() == null || review.getApartmentId().isEmpty()) {
+        if (review.getUserId().isEmpty() || review.getApartmentId().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        /*else if (review.getUserId().equals(review.getApartment().getUserId())){ // can't review your own apartment
+
+
+        List<Rent> rents = reviewBean.getRent(review.getUserId(),review.getApartmentId());
+        if (rents.isEmpty()){ // cannot review if not rented before
             return Response.status(Response.Status.CONFLICT).build();
-        }*/
+        } else if(rents.get(0).getComment().equals("N/A"))
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+
+        Apartment apartment =  reviewBean.getApartment(review.getApartmentId());
+        if (apartment.getTitle().equals("N/A"))
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+
+        if (review.getUserId().equals(apartment.getUserId())){ // can't review your own apartment
+            return Response.status(Response.Status.CONFLICT).build();
+        } else if (reviewBean.existsReview(review.getUserId(),review.getApartmentId())){ // user can review one apartment only once
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         else {
             review = reviewBean.createReview(review);
         }

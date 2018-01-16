@@ -55,6 +55,10 @@
             <groupId>si.fri.rso.projekt</groupId>
             <artifactId>user-models</artifactId>
         </dependency>
+        <dependency>
+            <groupId>si.fri.rso.projekt</groupId>
+            <artifactId>rent-models</artifactId>
+        </dependency>
 
     </dependencies>
 
