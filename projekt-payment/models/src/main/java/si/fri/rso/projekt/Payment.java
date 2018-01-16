@@ -5,11 +5,11 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "payment")
+@Entity(name = "payments")
 @NamedQueries(value =
 {
-    @NamedQuery(name = "Payment.getAll", query = "SELECT a FROM payment a"),
-    @NamedQuery(name = "Payment.findByRent", query = "SELECT a FROM payment a WHERE a.rentId = " +":rentId")
+    @NamedQuery(name = "Payment.getAll", query = "SELECT a FROM payments a"),
+    @NamedQuery(name = "Payment.findByRent", query = "SELECT a FROM payments a WHERE a.rentId = " +":rentId")
 })
 @UuidGenerator(name = "idGenerator")
 public class Payment {
@@ -20,6 +20,9 @@ public class Payment {
 
     @Column(name = "rent_id")
     private String rentId;
+
+    @Transient
+    private Rent rent;
 
     private Date date;
     private double value;
@@ -91,4 +94,13 @@ public class Payment {
     public void setCanceled(boolean canceled) {
         this.canceled = canceled;
     }
+
+    public Rent getRent() {
+        return rent;
+    }
+
+    public void setRent(Rent rent) {
+        this.rent = rent;
+    }
+
 }

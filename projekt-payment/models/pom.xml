@@ -22,6 +22,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>si.fri.rso.projekt</groupId>
+            <artifactId>rent-models</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

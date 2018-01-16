@@ -54,9 +54,11 @@ if ($build)
     mvn clean package -U
 }
 
+Start-Sleep -s 20
+
 
 Write-Host "`nKreiranje microservice containerjev"
-$etcdIP = "http://"+$ip+":2379"
+$etcdIP = "http://192.168.99.100:2379"
 Write-Host "`nETCD HOST NA $etcdIP"
 cd projekt-apartment
 docker build -t rso-apartment .

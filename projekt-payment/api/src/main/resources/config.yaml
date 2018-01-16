@@ -9,7 +9,7 @@ kumuluzee:
       port: 8088
   datasources:
     - jndi-name: jdbc/PaymentDS
-      connection-url: jdbc:postgresql://172.17.0.1:32775/payment
+      connection-url: jdbc:postgresql://172.17.0.1:32775/payments
       username: dbuser
       password: postgres
       max-pool-size: 20
