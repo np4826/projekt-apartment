@@ -6,7 +6,7 @@ if($clear){
     Remove-Item C:\Users\nikpi\.minikube -Recurse -Force
 }
 if($log){
-    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --kubernetes-version=$version --vcd=9
+    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --kubernetes-version=$version --v=9
 }
 else{
     minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --kubernetes-version=$version
