@@ -139,6 +139,28 @@ docker run -d --name rso-payment -e KUMULUZEE_CONFIG_ETCD_HOSTS=http://192.168.9
 
 **http://localhost:8087/v1/recommendation/user/1**
 
+**Kibana**
+
+Query examples:
+```bash
+contextMap.response-time < 2 
+
+contextMap.method: getApartments
+
+contextMap.method: getUsers
+
+contextMap.serviceName:rso-apartment
+```
+
+**Kafka**
+```bash
+docker network create kafka-net
+docker run -d -p 2181:2181 --name zookeeper --network kafka-net zookeeper:3.4
+docker run -d -p 9092:9092 --name kafka --network kafka-net --env ZOOKEEPER_IP=zookeeper --env KAFKA_ADVERTISED_HOST_NAME=$HostIP --env KAFKA_ADVERTISED_PORT=9092 ches/kafka
+docker run --rm --network kafka-net ches/kafka \
+  kafka-console-consumer.sh --topic lbu290s1-default --from-beginning --bootstrap-server kafka:9092
+```
+
 
 Mac - when finished, remove loopback (alias is not persistent – it will not survive a reboot):
 ```bash
