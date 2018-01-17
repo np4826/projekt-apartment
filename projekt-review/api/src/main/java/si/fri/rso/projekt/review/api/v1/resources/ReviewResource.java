@@ -1,5 +1,7 @@
 package si.fri.rso.projekt.review.api.v1.resources;
 
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.projekt.Apartment;
 import si.fri.rso.projekt.Message;
@@ -30,6 +32,8 @@ public class ReviewResource {
 
     @Context
     private UriInfo uriInfo;
+
+    private Logger log = LogManager.getLogger(ReviewBean.class.getName());
 
 
     @GET
@@ -113,7 +117,8 @@ public class ReviewResource {
 
 
         List<Rent> rents = reviewBean.getRent(review.getUserId(),review.getApartmentId());
-        if (rents.isEmpty()){ // cannot review if not rented before
+        if (rents.isEmpty()){
+            log.info("CreateReview: cannot review if not rented before");
             return Response.status(Response.Status.CONFLICT).build();
         } else if(rents.get(0).getComment().equals("N/A"))
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
@@ -122,19 +127,21 @@ public class ReviewResource {
         if (apartment.getTitle().equals("N/A"))
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
 
-        if (review.getUserId().equals(apartment.getUserId())){ // can't review your own apartment
+        if (review.getUserId().equals(apartment.getUserId())){
+            log.info("CreateReview: can't review your own apartment");
             return Response.status(Response.Status.CONFLICT).build();
-        } else if (reviewBean.existsReview(review.getUserId(),review.getApartmentId())){ // user can review one apartment only once
+        } else if (reviewBean.existsReview(review.getUserId(),review.getApartmentId())){
+            log.info("CreateReview: user can review one apartment only once");
             return Response.status(Response.Status.CONFLICT).build();
         }
         else {
             review = reviewBean.createReview(review);
         }
-        String content = "New rating submitted on apartment";
-        if (review.getComment() != null)
-            content = "New review on apartment";
-        producerResource.produceMessage(new Message(review.getApartmentId(), content, "lbu290s1-default"));
         if (review.getId() != null) {
+            String content = "New rating submitted on apartment";
+            if (review.getComment() != null)
+                content = "New review on apartment";
+            producerResource.produceMessage(new Message(review.getApartmentId(), review.getUserId(), content));
             return Response.status(Response.Status.CREATED).entity(review).build();
         } else {
             return Response.status(Response.Status.CONFLICT).entity(review).build();

@@ -19,7 +19,7 @@
  *  limitations under the License.
 */
 
-package si.fri.rso.projekt.review.api.v1.resources;
+package si.fri.rso.projekt.rent.api.v1.resources;
 
 
 import com.kumuluz.ee.streaming.common.annotations.StreamProducer;

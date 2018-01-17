@@ -24,14 +24,10 @@ kumuluzee:
   streaming:
     kafka:
       consumer:
-        bootstrap-servers: velomobile-01.srvs.cloudkafka.com:9094
+        bootstrap-servers: 192.168.99.100:9092
         group-id: group1
         enable-auto-commit: true
         auto-commit-interval-ms: 1000
         auto-offset-reset: earliest
         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        security-protocol: SASL_SSL
-        sasl-mechanism: SCRAM-SHA-256
-        sasl-jaas-config: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="lbu290s1" password="47YuTfNEY2qOXgcIYcEW-eX36rDJD0pX";'
-        group-id: newer
