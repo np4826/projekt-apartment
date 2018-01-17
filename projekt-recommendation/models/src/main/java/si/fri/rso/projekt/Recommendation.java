@@ -17,7 +17,9 @@ public class Recommendation {
     @GeneratedValue(generator = "idGenerator")
     private String id;
 
-    @Column(name = "recommendation_saved", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="recommendation_saved", nullable = false,
+            columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP")
     private Date recommendationSaved;
 
     @Column(name = "user_id")

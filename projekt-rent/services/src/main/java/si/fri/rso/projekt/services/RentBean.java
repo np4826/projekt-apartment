@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RequestScoped
@@ -166,6 +168,23 @@ public class RentBean {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public List<Rent> getOtherRentsForApartment(String userId, String apartmentId) {
+        TypedQuery<Rent> query = em.createNamedQuery("Rent.getOtherRentsForApartment", Rent.class);;
+        query.setParameter("userId", userId);
+        query.setParameter("apartmentId", apartmentId);
+        List<Rent> others = query.getResultList();
+        List<String> users = others.stream().map(Rent::getUserId).collect(Collectors.toCollection(ArrayList::new));
+
+        if (!others.isEmpty()){
+            query = em.createNamedQuery("Rent.getOtherSimilarRents", Rent.class);
+            query.setParameter("userId", users);
+            query.setParameter("apartmentId", apartmentId);
+
+            return query.getResultList();
+        }
+        return others;
     }
 
     public Rent createRent(Rent rent) {

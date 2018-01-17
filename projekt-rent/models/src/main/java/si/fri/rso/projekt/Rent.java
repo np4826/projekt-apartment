@@ -12,7 +12,11 @@ import java.util.Date;
                 @NamedQuery(name = "Rent.getByApartmentAndDates", query = "SELECT r FROM rents r " +
                         "WHERE r.apartmentId = :apartmentId " +
                         "AND r.rentStart >= :rStart " +
-                        "AND r.rentEnd <= :rEnd")
+                        "AND r.rentEnd <= :rEnd"),
+                @NamedQuery(name = "Rent.getOtherRentsForApartment", query = "SELECT r FROM rents r WHERE r.apartmentId = :apartmentId and r.userId != "+
+                        ":userId"),
+                @NamedQuery(name = "Rent.getOtherSimilarRents", query = "SELECT r FROM rents r WHERE r.apartmentId != :apartmentId and r.userId IN "+
+                        ":userId"),
         })
 @UuidGenerator(name = "idGenerator")
 public class Rent {

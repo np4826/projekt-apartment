@@ -59,6 +59,10 @@
             <groupId>si.fri.rso.projekt</groupId>
             <artifactId>event-models</artifactId>
         </dependency>
+        <dependency>
+            <groupId>si.fri.rso.projekt</groupId>
+            <artifactId>review-models</artifactId>
+        </dependency>
 
 
     </dependencies>

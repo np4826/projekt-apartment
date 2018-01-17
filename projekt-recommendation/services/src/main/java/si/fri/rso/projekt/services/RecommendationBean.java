@@ -8,11 +8,7 @@ import com.kumuluz.ee.rest.utils.JPAUtils;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
-import si.fri.rso.projekt.Apartment;
-import si.fri.rso.projekt.Recommendation;
-import si.fri.rso.projekt.Rent;
-import si.fri.rso.projekt.User;
-import si.fri.rso.projekt.Event;
+import si.fri.rso.projekt.*;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -26,9 +22,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RequestScoped
@@ -74,7 +70,7 @@ public class RecommendationBean {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
                 .defaultOffset(0)
                 .build();
-
+        //QueryParameters queryParameters = QueryParameters.query("filter:userId:EQ:"+userId).defaultOffset(0)
 
         List<Recommendation> recommendations = JPAUtils.queryEntities(em, Recommendation.class, queryParameters);
         for(Recommendation r : recommendations)
@@ -105,57 +101,110 @@ public class RecommendationBean {
             throw new NotFoundException();
         }
 
-        //recommendation.setApartment(recommendationBean.getApartment(recommendation.getApartmentId()));
+        List<Apartment> apartments = new ArrayList<>();
+        for(String id : recommendation.getApartmentsId()){
+            apartments.add(recommendationBean.getApartment(id));
+        }
+        recommendation.setApartments(apartments);
         recommendation.setUser(recommendationBean.getUser(recommendation.getUserId()));
 
         return recommendation;
     }
 
-    public  Recommendation getRecommendationForUser(String userId) {
+
+    public  Recommendation getNewRecommendationForUser(String userId) {
         //http://localhost:8085/v1/recommendation?filter=apartmentId:EQ:1
-        QueryParameters queryParameters = QueryParameters.query("filter:userId:EQ:"+userId).defaultOffset(0)
-                .build();
 
-        List<Recommendation> recommendations = JPAUtils.queryEntities(em, Recommendation.class, queryParameters);
-
-        if (recommendations.isEmpty()) {
-            recommendations = createRecommendations(userId);
-            if (recommendations == null)
-                throw new NotFoundException();
-        }
-
-        return recommendations.get(0);
+        // preveri events za datum, če treba spreminjat? shrani?
+        Recommendation recommendation = createRecommendation(userId);
+        return recommendation;
     }
 
-    // get similar rents - userje order by dt
-    // get reviews for apartments od userjev ali countkateri najpog.
-    // priporoči vsaj 3. če ni ocene kdor najel?
-    // preveri events za datum, če treba spreminjat? shrani?
-    // če premalo dobi latest events
-    // če še premalo reviewstoprated
-    private List<Recommendation> createRecommendations(String userId){
+    private boolean enoughApartments(Recommendation recommendation){
+        int minN = 3; // config?
+        return recommendation.getApartmentsId().size() >= minN;
+    }
+
+    private Recommendation createRecommendation(String userId){
         // get best reviews of users who had same rent
         // get all rents for user
         //http://localhost:8083/v1/rent?filter=userId:EQ:3
-        List<Recommendation> recommendations = new ArrayList<>();
         Recommendation recommendation = new Recommendation();
         recommendation.setApartmentsId(new ArrayList<>());
-        // Rent, userId, apartmentId
+        //get user apartments
+        User user = recommendationBean.getUser(userId);
+        //List<String> userApartments = user.getApartments().stream().map(Apartment::getId).collect(Collectors.toCollection(ArrayList::new));
+        if (user != null && user.getApartments() != null){
+            List<String> rentsA = new ArrayList<>();
+            for (Apartment apartment : user.getApartments()){
+                // get other rents for same apartment
+                List<Rent> rentsTmp = recommendationBean.getRents(userId, apartment.getId());
+                if (rentsTmp != null){
+                    for (Rent r: rentsTmp){
+                        if(!r.getComment().equals("N/A") && r.getApartmentId()!=null)
+                            rentsA.add(r.getApartmentId());
+                    }
+                }
+            }
+            // countkateri najpog.
+            Set<String> uniqueSet = new HashSet<>(rentsA);
+            Integer max=0;
+            Map<String, Integer> occurrences = new HashMap<>();
+            for (String temp : uniqueSet) {
+                Integer aFreq =Collections.frequency(rentsA, temp);
+                 occurrences.put(temp, aFreq);
+                 if (aFreq > max)
+                     max = aFreq;
+            }
 
-        List<Event> events = recommendationBean.getEvents(userId);
-        if (events != null)
-        for (Event e:  events) {
-            if (e.getApartmentId() != null){
-                recommendation.getApartmentsId().add(e.getApartmentId());
+            if (occurrences != null){ // if is null then no rents found
+                log.info(occurrences.toString()+" "+occurrences.size());
+                for (int i = max; i>0; i--){
+                    for (String a: uniqueSet){
+                        if (occurrences.get(a) == i){
+                            recommendation.getApartmentsId().add(a);
+                            if (enoughApartments(recommendation))
+                                break;
+                        }
+                    }
+                    if (enoughApartments(recommendation))
+                        break;
+                }
             }
 
         }
-        recommendations.add(recommendation);
-        return recommendations;
+
+        // če premalo dobi latest events
+        if (!enoughApartments(recommendation)){
+            List<Event> events = recommendationBean.getEvents(userId);
+            if (events != null)
+                for (Event e:  events) {
+                    if (e.getApartmentId() != null){
+                        recommendation.getApartmentsId().add(e.getApartmentId());
+                    }
+
+                }
+        }
+        // če še premalo reviewstoprated without owner
+        if (!enoughApartments(recommendation)){
+            List<Review> reviews = recommendationBean.getReviews(userId);
+            if (reviews != null)
+                for (Review r:  reviews) {
+                    if (r.getApartmentId() != null){
+                        recommendation.getApartmentsId().add(r.getApartmentId());
+                    }
+
+                }
+        }
+        recommendation.setUserId(userId);
+        recommendation = recommendationBean.createRecommendation(recommendation);
+        recommendation.setUser(user);
+        return recommendation;
     }
 
     public Recommendation createRecommendation(Recommendation recommendation) {
 
+        recommendation.setRecommendationSaved(new Timestamp(Calendar.getInstance(TimeZone.getTimeZone("Europe/Ljubljana")).getTime().getTime()));
         try {
             beginTx();
             em.persist(recommendation);
@@ -244,7 +293,7 @@ public class RecommendationBean {
             log.info("GETTING user with ID "+userId+" and url:"+basePathUser);
             try {
                 return httpClient
-                        .target(basePathUser.get() + "/v1/user/simple/" + userId)
+                        .target(basePathUser.get() + "/v1/user/" + userId)
                         .request().get(new GenericType<User>() {
                         });
             } catch (WebApplicationException | ProcessingException e) {
@@ -267,12 +316,12 @@ public class RecommendationBean {
     @CircuitBreaker(requestVolumeThreshold = 2)
     @Fallback(fallbackMethod = "getRentsFallback")
     @Timeout
-    public List<Rent> getRents(String userId) {
-        //http://localhost:8083/v1/rent?filter=userId:EQ:3
+    public List<Rent> getRents(String userId, String apartmentId) {
+        //http://localhost:8083/v1/rent/other/3/1  @Path("/other/{userId}/{apartmentId}")
         if (basePathRent.isPresent()) {
             try {
                 return httpClient
-                        .target(basePathRent.get() + "/v1/rent?filter=userId:EQ:" + userId)
+                        .target(basePathRent.get() + "/v1/rent/other/" + userId + "/"+apartmentId)
                         .request().get(new GenericType<List<Rent>>()  {
                         });
             } catch (WebApplicationException | ProcessingException e) {
@@ -283,7 +332,7 @@ public class RecommendationBean {
         return null;
     }
 
-    public List<Rent> getRentsFallback(String apartmentId) {
+    public List<Rent> getRentsFallback(String userId, String apartmentId) {
         log.info("IN GETRENTS FALLBACK");
         Rent apartment = new Rent();
         apartment.setComment("N/A");
@@ -314,6 +363,34 @@ public class RecommendationBean {
         Event event = new Event();
         event.setMessage("N/A");
         return new ArrayList<Event>();
+    }
+
+    @CircuitBreaker(requestVolumeThreshold = 4)
+    @Fallback(fallbackMethod = "getReviewsFallback")
+    @Timeout
+    public List<Review> getReviews(String userId) {
+        //http://192.168.99.100:8085/v1/review/bestRatedWithoutOwner/3
+        if (basePathReview.isPresent()) {
+            try {
+                return httpClient
+                        .target(basePathEvent.get() + "/v1/review/bestRatedWithoutOwner/" + userId)
+                        .request().get(new GenericType<List<Review>>()  {
+                        });
+            } catch (WebApplicationException | ProcessingException e) {
+                log.error(e);
+                throw new InternalServerErrorException(e);
+            }
+        }
+        return null;
+    }
+
+    public List<Review> getReviewsFallback(String userId) {
+        log.info("IN GET Reviews FALLBACK");
+        List<Review> reviews = new ArrayList<>();
+        Review review = new Review();
+        review.setComment("N/A");
+        reviews.add(review);
+        return reviews;
     }
 
 

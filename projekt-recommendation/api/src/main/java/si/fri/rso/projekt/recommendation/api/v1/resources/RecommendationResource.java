@@ -60,9 +60,9 @@ public class RecommendationResource {
 
     @GET
     @Path("/user/{userId}")
-    public Response getRecommendationForUser(@PathParam("userId") String userId) {
+    public Response getNewRecommendationForUser(@PathParam("userId") String userId) {
 
-        Recommendation recommendation = recommendationBean.getRecommendationForUser(userId);
+        Recommendation recommendation = recommendationBean.getNewRecommendationForUser(userId);
 
         if (recommendation == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

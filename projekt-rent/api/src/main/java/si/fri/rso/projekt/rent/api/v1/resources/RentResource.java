@@ -71,6 +71,19 @@ public class RentResource {
         return Response.status(Response.Status.OK).entity(rent).build();
     }
 
+    @GET
+    @Path("/other/{userId}/{apartmentId}")
+    public Response getOtherRentsForApartment(@PathParam("userId") String userId, @PathParam("apartmentId") String apartmentId) {
+
+        List<Rent> rents = rentBean.getOtherRentsForApartment(userId, apartmentId);
+
+        if (rents == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(rents).build();
+    }
+
     @POST
     public Response createRent(Rent rent) {
         log.info("Creating new rent");
