@@ -53,7 +53,12 @@ public class DemoResource {
 
     @POST
     @Path("memory")
-    public void MemoryEater(){
+    public Response memoryEater(){
+        memoryEat();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    public void memoryEat(){
         Vector v = new Vector();
         while(true){
             byte b[] = new byte[1048576];
