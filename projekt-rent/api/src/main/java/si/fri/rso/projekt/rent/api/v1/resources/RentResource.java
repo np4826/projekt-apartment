@@ -1,6 +1,7 @@
 package si.fri.rso.projekt.rent.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
+import si.fri.rso.projekt.Message;
 import si.fri.rso.projekt.Rent;
 import si.fri.rso.projekt.services.RentBean;
 
@@ -27,6 +28,9 @@ public class RentResource {
     private UriInfo uriInfo;
 
     private Logger log = Logger.getLogger(RentResource.class.getName());
+
+    @Inject
+    private ProducerResource producerResource;
 
     @GET
     public Response getRents() {
@@ -87,6 +91,8 @@ public class RentResource {
         }
 
         if (rent.getId() != null) {
+            String content = "New rent";
+            producerResource.produceMessage(new Message(rent.getApartmentId(), rent.getUserId(), content));
             return Response.status(Response.Status.CREATED).entity(rent).build();
         } else {
             return Response.status(Response.Status.CONFLICT).entity(rent).build();

@@ -24,3 +24,14 @@ kumuluzee:
   cors-filter:
     servlet:
       allow-origin: "*"
+  streaming:
+    kafka:
+      producer:
+        bootstrap-servers: 192.168.99.100:9092
+        acks: all
+        retries: 0
+        batch-size: 16384
+        linger-ms: 1
+        buffer-memory: 33554432
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer

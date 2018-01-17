@@ -126,7 +126,7 @@ public class ReviewBean {
     }
 
     public boolean existsReview(String userId, String apartmentId){
-        String query = "filter=userId:EQ:" +userId+"%20apartmentId:EQ:"+apartmentId;
+        String query = "filter=userId:EQ:" +userId+" apartmentId:EQ:"+apartmentId;
         QueryParameters queryParameters = QueryParameters.query(query).defaultOffset(0)
                 .build();
 

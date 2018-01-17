@@ -25,6 +25,7 @@ package si.fri.rso.projekt.services.streaming.consumers;
 import com.kumuluz.ee.streaming.common.annotations.StreamListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import si.fri.rso.projekt.Event;
+import si.fri.rso.projekt.Message;
 import si.fri.rso.projekt.services.EventBean;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -48,11 +49,14 @@ public class TestConsumer {
 
         log.info(String.format("Consumed message: offset = %d, key = %s, value = %s%n", record.offset(), record.key()
                 , record.value()));
+        Message m = new Message();
+        m.setMessageFromConsumerRecord(record.key(), record.value(), record.topic());
+        messages.add(m.getContent());
 
-        messages.add(record.value());
         Event e = new Event();
-        e.setMessage(record.value());
-        e.setApartmentId(record.key());
+        e.setMessage(m.getContent());
+        e.setApartmentId(m.getApartmentId());
+        e.setUserId(m.getUserId());
         eventBean.createEvent(e);
     }
 
