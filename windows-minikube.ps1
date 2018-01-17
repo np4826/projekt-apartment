@@ -1,4 +1,4 @@
-param([switch]$clear = $false, [switch]$log = $false)
+param([switch]$clear = $false, [switch]$log = $false, [string]$version = "v1.8.0")
 if($clear){
     Write-Host "BRISANJE STARIH VERZIJ"
     minikube delete
@@ -6,8 +6,8 @@ if($clear){
     Remove-Item C:\Users\nikpi\.minikube -Recurse -Force
 }
 if($log){
-    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --vcd=9
+    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --kubernetes-version=$version --vcd=9
 }
 else{
-    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube
+    minikube start --vm-driver hyperv --hyperv-virtual-switch=Minikube --kubernetes-version=$version
 }
