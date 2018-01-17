@@ -1,7 +1,8 @@
 Write-Host "Brisanje kubernetesa"
 kubectl delete --all pods --namespace=default
 kubectl delete --all deployments --namespace=default
-kubectl delete --all services --namespace=default
+#kubectl delete --all services --namespace=default
+kubectl delete --all hpa --namespace=default
 
 Write-Host "`nPostgres"
 cd projekt-kubernetes
@@ -28,8 +29,8 @@ kubectl create -f postgres-payment-service.yaml
 
 #Write-Host "`GRAFANA"
 
-#kubectl create -f grafana-deployment.yaml
-#kubectl create -f grafana-service.yaml
+kubectl create -f grafana-deployment.yaml
+kubectl create -f grafana-service.yaml
 
 Start-Sleep -s 20
 
@@ -56,7 +57,7 @@ kubectl create -f payment-service.yaml
 
 Write-Host "`nMikroservices - scale"
 kubectl autoscale deployment apartment-deployment --min=1 --max=10
-kubectl autoscale deployment user-deployment --min=2 --max=10
+kubectl autoscale deployment user-deployment --min=1 --max=10
 
 cd ..
 Write-Host "`nDone :-)"
