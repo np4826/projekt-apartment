@@ -28,7 +28,8 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 400m
+            cpu: "300m"
+            memory: "264Mi"
         livenessProbe:
           httpGet:
             path: /health

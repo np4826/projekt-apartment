@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 @Path("demo")
@@ -48,6 +49,18 @@ public class DemoResource {
         }
 
         return Response.status(Response.Status.OK).build();
+    }
+
+    @POST
+    @Path("memory")
+    public void MemoryEater(){
+        Vector v = new Vector();
+        while(true){
+            byte b[] = new byte[1048576];
+            v.add(b);
+            Runtime rt = Runtime.getRuntime();
+            log.info("MEMORY EATER - FREE MEMORY: "+rt.freeMemory());
+        }
     }
 
     private long fibonacci(int n) {
